@@ -54,7 +54,7 @@ export function TeamSpeedPanel({
 
   return (
     <section className="rounded-lg border border-showdown-border bg-showdown-panel shadow-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
-      <div className="border-b border-showdown-border px-4 py-3 dark:border-showdown-dark-border">
+      <div className="border-b border-showdown-border px-3 py-3 sm:px-4 dark:border-showdown-dark-border">
         <h3 className="text-sm font-semibold text-showdown-accent">
           Team: {teamName}
         </h3>
@@ -69,8 +69,8 @@ export function TeamSpeedPanel({
           <SpeedModifiersBar mods={mods} onChange={onModsChange} compact />
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[520px] border-collapse text-sm">
+      <div className="scroll-touch max-w-full">
+        <table className="w-full min-w-[28rem] border-collapse text-sm">
           <thead>
             <tr className="border-b border-showdown-border bg-showdown-hover/50 text-left text-xs text-gray-500 dark:border-showdown-dark-border dark:bg-showdown-dark-panel/50">
               <th className="px-3 py-2 font-medium">Pokémon</th>

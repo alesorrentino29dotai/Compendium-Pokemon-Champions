@@ -80,8 +80,8 @@ export function StatBar({
         fissi a {CHAMPIONS_FIXED_IV} (non influenzano il calcolo).
       </p>
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[300px] border-collapse text-xs">
+      <div className="scroll-touch">
+        <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="text-left text-gray-500">
               <th className="pb-1 pr-2 font-medium">Stat</th>
@@ -126,7 +126,7 @@ export function StatBar({
                           onEvsPatch,
                         )
                       }
-                      className="w-14 accent-showdown-accent sm:w-20"
+                      className="min-w-0 flex-1 accent-showdown-accent"
                     />
                     <input
                       type="number"
@@ -151,7 +151,7 @@ export function StatBar({
                           onEvsPatch,
                         )
                       }
-                      className="w-10 rounded border border-showdown-border bg-white px-1 py-0.5 font-mono dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
+                      className="w-11 shrink-0 rounded border border-showdown-border bg-white px-1 py-1 font-mono dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
                     />
                   </div>
                 </td>

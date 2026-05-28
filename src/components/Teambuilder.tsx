@@ -85,7 +85,7 @@ export function Teambuilder() {
     <>
       <section className="rounded-lg border border-showdown-border bg-showdown-panel shadow-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-showdown-border px-4 py-3 dark:border-showdown-dark-border">
+        <div className="flex flex-wrap items-center gap-2 border-b border-showdown-border px-3 py-2.5 sm:px-4 sm:py-3 dark:border-showdown-dark-border">
           {teams.length > 1 &&
             teams.map((t) => (
               <button
@@ -143,7 +143,7 @@ export function Teambuilder() {
         </div>
 
         {/* Team grid */}
-        <div className="border-b border-showdown-border p-4 dark:border-showdown-dark-border">
+        <div className="border-b border-showdown-border p-3 sm:p-4 dark:border-showdown-dark-border">
           <p className="mb-3 text-xs text-gray-500">
             Reg M-A · Tocca uno slot per modificare, o + per aggiungere
           </p>
@@ -156,7 +156,7 @@ export function Teambuilder() {
         </div>
 
         {/* Editor panel */}
-        <div className="p-4 md:p-6">
+        <div className="p-3 sm:p-4 md:p-6">
           {selectedMon && effectiveSelectedSlot !== null ? (
             <PokemonEditor
               set={selectedMon}

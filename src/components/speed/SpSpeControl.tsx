@@ -12,7 +12,7 @@ export function SpSpeControl({ value, onChange }: SpSpeControlProps) {
   }
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex w-full max-w-[8rem] flex-col items-stretch gap-1 sm:max-w-none sm:items-center">
       <input
         type="range"
         min={0}
@@ -21,7 +21,7 @@ export function SpSpeControl({ value, onChange }: SpSpeControlProps) {
         value={value}
         onInput={(e) => apply(Number(e.currentTarget.value))}
         onChange={(e) => apply(Number(e.target.value))}
-        className="h-1.5 w-16 accent-showdown-accent sm:w-20"
+        className="h-2 w-full min-w-0 accent-showdown-accent sm:h-1.5 sm:w-20"
         aria-label="SP Velocità"
       />
       <input
@@ -31,7 +31,7 @@ export function SpSpeControl({ value, onChange }: SpSpeControlProps) {
         value={value}
         onInput={(e) => apply(Number(e.currentTarget.value))}
         onChange={(e) => apply(Number(e.target.value))}
-        className="w-11 rounded border border-showdown-border bg-white px-1 py-0.5 text-center font-mono text-sm font-semibold text-showdown-accent focus:border-showdown-accent focus:outline-none focus:ring-1 focus:ring-showdown-accent dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
+        className="w-full rounded border border-showdown-border bg-white px-1 py-1 text-center font-mono text-sm font-semibold text-showdown-accent focus:border-showdown-accent focus:outline-none focus:ring-1 focus:ring-showdown-accent dark:border-showdown-dark-border dark:bg-showdown-dark-bg sm:w-11"
       />
     </div>
   )

@@ -65,6 +65,8 @@ L’app web è incapsulata con **[Capacitor](https://capacitorjs.com/)** in un W
 
 **Package ID:** `com.compendium.pokemonchampions`
 
+L’interfaccia è ottimizzata per telefono: barra di navigazione in basso, safe area (notch), tabelle scrollabili orizzontalmente e input a dimensione touch-friendly.
+
 ### Opzione A — Generare l’APK su GitHub (consigliata)
 
 Non serve Android Studio: GitHub compila l’APK automaticamente.

@@ -75,7 +75,7 @@ export function ReferenceSpeedGrid({
 
   return (
     <section className="rounded-lg border border-showdown-border bg-showdown-panel shadow-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
-      <div className="border-b border-showdown-border p-4 dark:border-showdown-dark-border">
+      <div className="border-b border-showdown-border p-3 sm:p-4 dark:border-showdown-dark-border">
         <div>
           <h3 className="text-sm font-semibold text-showdown-accent">
             Database soglie Reg M-A
@@ -145,8 +145,8 @@ export function ReferenceSpeedGrid({
           Nessun Pokémon corrisponde ai filtri.
         </p>
       ) : (
-        <div className="max-h-[min(70vh,32rem)] overflow-auto">
-          <table className="w-full min-w-[680px] border-collapse text-sm">
+        <div className="scroll-touch max-h-[min(70vh,32rem)] max-w-full">
+          <table className="w-full min-w-[36rem] border-collapse text-sm">
             <thead className="sticky top-0 z-10 bg-showdown-panel shadow-sm dark:bg-showdown-dark-panel">
               <tr className="border-b border-showdown-border text-left text-xs uppercase tracking-wide text-gray-500 dark:border-showdown-dark-border">
                 <th className="px-3 py-2.5 font-semibold">Pokémon</th>

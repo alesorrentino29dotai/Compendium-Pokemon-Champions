@@ -78,7 +78,7 @@ export function PokemonEditor({
           speciesId={set.speciesId}
           speciesName={set.speciesName}
           nationalNum={species?.num ?? 0}
-          size={96}
+          size={80}
         />
         <div className="min-w-0 flex-1 space-y-2">
           <div className="flex flex-wrap items-center gap-2">

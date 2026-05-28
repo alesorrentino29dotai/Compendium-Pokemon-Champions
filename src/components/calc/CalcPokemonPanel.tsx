@@ -62,7 +62,7 @@ export function CalcPokemonPanel({
   }, [teamLoadOptions.length])
 
   return (
-    <section className="flex flex-col gap-3 rounded-lg border border-showdown-border bg-showdown-panel p-4 shadow-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
+    <section className="flex flex-col gap-3 rounded-lg border border-showdown-border bg-showdown-panel p-3 shadow-sm sm:p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-showdown-border pb-2 dark:border-showdown-dark-border">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-showdown-accent">
           {title}

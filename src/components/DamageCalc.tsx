@@ -164,7 +164,7 @@ export function DamageCalc() {
         </p>
       </header>
 
-      <section className="rounded-lg border border-showdown-border bg-showdown-panel p-4 shadow-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
+      <section className="rounded-lg border border-showdown-border bg-showdown-panel p-3 shadow-sm sm:p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
         <h3 className="mb-3 text-sm font-semibold text-gray-600 dark:text-gray-300">
           Campo di battaglia
         </h3>
@@ -348,7 +348,7 @@ export function DamageCalc() {
       </div>
 
       <section
-        className="rounded-lg border border-showdown-border bg-showdown-hover/50 p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel/80"
+        className="rounded-lg border border-showdown-border bg-showdown-hover/50 p-3 sm:p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel/80"
         aria-live="polite"
       >
         <h3 className="mb-4 text-sm font-semibold text-showdown-accent">

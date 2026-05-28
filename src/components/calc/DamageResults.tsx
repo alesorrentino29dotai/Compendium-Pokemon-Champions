@@ -29,8 +29,8 @@ function MoveTable({
   return (
     <div>
       <h4 className="mb-2 text-sm font-semibold text-showdown-accent">{title}</h4>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[320px] border-collapse text-sm">
+      <div className="scroll-touch">
+        <table className="w-full min-w-[18rem] border-collapse text-sm">
           <thead>
             <tr className="border-b border-showdown-border text-left text-xs text-gray-500 dark:border-showdown-dark-border">
               <th className="py-2 pr-3 font-medium">Mossa</th>
