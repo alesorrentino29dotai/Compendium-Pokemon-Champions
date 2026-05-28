@@ -59,6 +59,53 @@ npm run preview   # anteprima build
 npm run lint      # ESLint
 ```
 
+## App Android (APK)
+
+L’app web è incapsulata con **[Capacitor](https://capacitorjs.com/)** in un WebView nativo Android.
+
+**Package ID:** `com.compendium.pokemonchampions`
+
+### Opzione A — Generare l’APK su GitHub (consigliata)
+
+Non serve Android Studio: GitHub compila l’APK automaticamente.
+
+1. **Assicurati che il codice sia su GitHub** (`main` aggiornato).
+2. Apri il repository:  
+   [github.com/alesorrentino29dotai/Compendium-Pokemon-Champions](https://github.com/alesorrentino29dotai/Compendium-Pokemon-Champions)
+3. Vai alla tab **Actions**.
+4. Seleziona il workflow **Android APK** nella colonna sinistra.
+5. Clicca **Run workflow** → branch `main` → **Run workflow**  
+   *(oppure attendi che parta da solo dopo un push su `main` che modifica `src/`, `android/`, ecc.)*
+6. Quando la run è verde (✓), apri il job **build** e scorri fino a **Artifacts**.
+7. Scarica:
+   - **compendium-debug-apk** → `app-debug.apk` (installazione diretta sul telefono)
+   - **compendium-release-apk** → `app-release-unsigned.apk` (da firmare per Play Store)
+8. **Sul telefono Android:**
+   - Trasferisci `app-debug.apk` (USB, Drive, email, ecc.)
+   - Abilita *Installa app sconosciute* per il browser/file manager usato
+   - Apri l’APK e conferma l’installazione
+
+Per rigenerare l’APK dopo modifiche al codice: fai push su `main` e ripeti dal punto 3 (o attendi la run automatica).
+
+### Opzione B — Build locale (Android Studio)
+
+**Prerequisiti:** [Android Studio](https://developer.android.com/studio), Java 17+, `ANDROID_HOME` configurato.
+
+```bash
+npm install
+npm run data:all          # dati offline (obbligatorio)
+npm run cap:sync          # build web + copia in android/
+npm run android:debug     # APK → android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+APK release (unsigned):
+
+```bash
+npm run android:release   # → android/app/build/outputs/apk/release/app-release-unsigned.apk
+```
+
+Apri in Android Studio: `npm run cap:open` → **Build → Build APK(s)**.
+
 ## Struttura progetto
 
 ```
