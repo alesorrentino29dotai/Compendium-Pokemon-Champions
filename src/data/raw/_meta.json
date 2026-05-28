@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-28T21:47:02.154Z",
+  "cdn": "https://play.pokemonshowdown.com/data",
+  "dexPackage": "@pkmn/dex",
+  "files": [
+    "pokedex.json",
+    "moves.json",
+    "learnsets.json",
+    "items",
+    "abilities",
+    "natures",
+    "typechart"
+  ]
+}
