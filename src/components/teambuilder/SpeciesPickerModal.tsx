@@ -40,14 +40,14 @@ export function SpeciesPickerModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 p-4 sm:items-center"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 p-0 sm:p-4 sm:items-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="species-picker-title"
       onClick={onClose}
     >
       <div
-        className="flex max-h-[85dvh] w-full max-w-lg flex-col overflow-hidden rounded-lg border border-showdown-border bg-showdown-panel shadow-xl dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
+        className="flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-showdown-border bg-showdown-panel shadow-xl sm:rounded-lg dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-showdown-border px-4 py-3 dark:border-showdown-dark-border">
@@ -57,14 +57,14 @@ export function SpeciesPickerModal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded px-2 py-1 text-gray-500 hover:bg-showdown-hover dark:hover:bg-showdown-dark-border"
+            className="rounded px-3 py-2 text-gray-500 hover:bg-showdown-hover dark:hover:bg-showdown-dark-border"
             aria-label="Chiudi"
           >
             ✕
           </button>
         </div>
 
-        <div className="overflow-y-auto p-4">
+        <div className="overflow-y-auto p-4 pb-[max(env(safe-area-inset-bottom),1rem)]">
           <SpeciesSearchSelect
             value={null}
             onChange={handleSelect}

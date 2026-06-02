@@ -49,6 +49,7 @@ export function SpeciesSearchSelect({
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [highlight, setHighlight] = useState(0)
+  const [useMobileSheet, setUseMobileSheet] = useState(false)
 
   const filtered = useMemo(() => {
     const q = normalizeSearch(query)
@@ -91,6 +92,26 @@ export function SpeciesSearchSelect({
     return () => document.removeEventListener('mousedown', onDoc)
   }, [open, close])
 
+  useEffect(() => {
+    const mq = window.matchMedia?.('(max-width: 639px)')
+    if (!mq) return
+
+    const sync = () => setUseMobileSheet(mq.matches)
+    sync()
+
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    if (!open || !useMobileSheet) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prevOverflow
+    }
+  }, [open, useMobileSheet])
+
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (!open && (e.key === 'ArrowDown' || e.key === 'Enter')) {
       e.preventDefault()
@@ -124,7 +145,7 @@ export function SpeciesSearchSelect({
           setOpen((o) => !o)
           if (!open) setTimeout(() => inputRef.current?.focus(), 0)
         }}
-        className="flex w-full min-w-0 items-center gap-2 rounded border border-showdown-border bg-white px-2 py-1.5 text-left text-sm hover:border-showdown-accent disabled:opacity-50 dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
+        className="flex w-full min-w-0 items-center gap-2 rounded border border-showdown-border bg-white px-3 py-2 text-left text-sm hover:border-showdown-accent disabled:opacity-50 sm:px-2 sm:py-1.5 dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-controls={listId}
@@ -150,65 +171,94 @@ export function SpeciesSearchSelect({
       </button>
 
       {open && (
-        <div
-          className="absolute z-50 mt-1 flex max-h-72 w-full min-w-[min(100%,280px)] flex-col overflow-hidden rounded-md border border-showdown-border bg-white shadow-lg dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
-          role="listbox"
-          id={listId}
-        >
-          <div className="border-b border-showdown-border p-2 dark:border-showdown-dark-border">
-            <input
-              ref={inputRef}
-              type="search"
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value)
-                setHighlight(0)
-              }}
-              onKeyDown={onKeyDown}
-              placeholder="Nome o n° Pokédex…"
-              className="w-full rounded border border-showdown-border bg-showdown-bg px-2 py-1.5 text-sm outline-none focus:border-showdown-accent dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
-              autoComplete="off"
-              spellCheck={false}
+        <>
+          {useMobileSheet && (
+            <button
+              type="button"
+              className="fixed inset-0 z-40 bg-black/40 sm:hidden"
+              onClick={close}
+              aria-label="Chiudi ricerca Pokémon"
             />
-            <p className="mt-1 text-[10px] text-gray-400">
-              {filtered.length}
-              {filtered.length >= MAX_SEARCH_RESULTS ? '+' : ''} risultati ·
-              Reg M-A
-            </p>
-          </div>
+          )}
 
-          <ul className="overflow-y-auto overscroll-contain">
-            {filtered.length === 0 ? (
-              <li className="px-3 py-4 text-center text-sm text-gray-400">
-                Nessun Pokémon trovato
-              </li>
-            ) : (
-              filtered.map((species, i) => (
-                <li key={species.id} role="option" aria-selected={i === highlight}>
-                  <button
-                    type="button"
-                    className={`flex w-full items-center gap-2 px-2 py-1.5 text-left text-sm hover:bg-showdown-hover dark:hover:bg-showdown-dark-border/40 ${
-                      i === highlight ? 'bg-showdown-hover dark:bg-showdown-dark-border/60' : ''
-                    } ${value === species.id ? 'text-showdown-accent' : ''}`}
-                    onMouseEnter={() => setHighlight(i)}
-                    onClick={() => pick(species)}
-                  >
-                    <PokemonSprite
-                      speciesId={species.id}
-                      speciesName={species.name}
-                      nationalNum={species.num}
-                    />
-                    <span className="min-w-0 flex-1 truncate">{species.name}</span>
-                    <span className="font-mono text-[10px] text-gray-400">
-                      #{species.num}
-                    </span>
-                    <TypeBadges types={species.types} small />
-                  </button>
+          <div
+            className={[
+              // Mobile: bottom sheet
+              'fixed inset-x-0 bottom-0 z-50 sm:absolute sm:bottom-auto sm:inset-auto',
+              // Desktop: anchor under trigger and allow wider popover
+              'sm:left-0 sm:mt-1 sm:w-max sm:min-w-[24rem] sm:max-w-[min(44rem,calc(100vw-1rem))]',
+              // Shared panel styling
+              'flex max-h-[80dvh] flex-col overflow-hidden border border-showdown-border bg-white shadow-xl',
+              // Mobile rounding / safe area
+              'rounded-t-xl sm:rounded-md',
+              'dark:border-showdown-dark-border dark:bg-showdown-dark-panel',
+            ].join(' ')}
+            role="listbox"
+            id={listId}
+          >
+            <div className="border-b border-showdown-border p-3 sm:p-2 dark:border-showdown-dark-border">
+              <input
+                ref={inputRef}
+                type="search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value)
+                  setHighlight(0)
+                }}
+                onKeyDown={onKeyDown}
+                placeholder="Nome o n° Pokédex…"
+                className="w-full rounded border border-showdown-border bg-showdown-bg px-3 py-2 text-sm outline-none focus:border-showdown-accent sm:px-2 sm:py-1.5 dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              <p className="mt-1 text-[10px] text-gray-400">
+                {filtered.length}
+                {filtered.length >= MAX_SEARCH_RESULTS ? '+' : ''} risultati · Reg
+                M-A
+              </p>
+            </div>
+
+            <ul className="overflow-y-auto overscroll-contain pb-[max(env(safe-area-inset-bottom),0.75rem)]">
+              {filtered.length === 0 ? (
+                <li className="px-3 py-6 text-center text-sm text-gray-400">
+                  Nessun Pokémon trovato
                 </li>
-              ))
-            )}
-          </ul>
-        </div>
+              ) : (
+                filtered.map((species, i) => (
+                  <li
+                    key={species.id}
+                    role="option"
+                    aria-selected={i === highlight}
+                  >
+                    <button
+                      type="button"
+                      className={`flex w-full items-center gap-2 px-3 py-3 text-left text-sm hover:bg-showdown-hover sm:px-2 sm:py-1.5 dark:hover:bg-showdown-dark-border/40 ${
+                        i === highlight
+                          ? 'bg-showdown-hover dark:bg-showdown-dark-border/60'
+                          : ''
+                      } ${value === species.id ? 'text-showdown-accent' : ''}`}
+                      onMouseEnter={() => setHighlight(i)}
+                      onClick={() => pick(species)}
+                    >
+                      <PokemonSprite
+                        speciesId={species.id}
+                        speciesName={species.name}
+                        nationalNum={species.num}
+                      />
+                      <span className="min-w-0 flex-1 truncate">
+                        {species.name}
+                      </span>
+                      <span className="font-mono text-[10px] text-gray-400">
+                        #{species.num}
+                      </span>
+                      <TypeBadges types={species.types} small />
+                    </button>
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
+        </>
       )}
     </div>
   )
