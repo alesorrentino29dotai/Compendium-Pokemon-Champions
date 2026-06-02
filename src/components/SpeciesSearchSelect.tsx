@@ -96,11 +96,16 @@ export function SpeciesSearchSelect({
     const mq = window.matchMedia?.('(max-width: 639px)')
     if (!mq) return
 
-    const sync = () => setUseMobileSheet(mq.matches)
+    const pointerMq = window.matchMedia?.('(pointer: coarse)')
+    const sync = () => setUseMobileSheet(Boolean(mq.matches && pointerMq?.matches))
     sync()
 
     mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
+    pointerMq?.addEventListener?.('change', sync)
+    return () => {
+      mq.removeEventListener('change', sync)
+      pointerMq?.removeEventListener?.('change', sync)
+    }
   }, [])
 
   useEffect(() => {
