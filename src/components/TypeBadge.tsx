@@ -30,8 +30,12 @@ export interface TypeBadgeRowProps {
   className?: string
 }
 
+function isNonEmptyString(value: string): value is string {
+  return value.length > 0
+}
+
 export function TypeBadgeRow({ types, compact, className = '' }: TypeBadgeRowProps) {
-  const normalized = types.map(formatTypeName).filter(Boolean)
+  const normalized = types.map(formatTypeName).filter(isNonEmptyString)
   if (normalized.length === 0) return null
 
   return (
