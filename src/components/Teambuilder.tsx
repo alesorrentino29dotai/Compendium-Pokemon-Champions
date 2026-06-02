@@ -86,24 +86,51 @@ export function Teambuilder() {
       <section className="rounded-lg border border-showdown-border bg-showdown-panel shadow-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
         {/* Toolbar */}
         <div className="flex flex-wrap items-center gap-2 border-b border-showdown-border px-3 py-2.5 sm:px-4 sm:py-3 dark:border-showdown-dark-border">
-          {teams.length > 1 &&
-            teams.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => {
-                  setActiveTeam(t.id)
-                  setSelectedSlot(null)
-                }}
-                className={`rounded px-2.5 py-1 text-xs ${
-                  t.id === active.id
-                    ? 'bg-showdown-accent text-white'
-                    : 'border border-showdown-border dark:border-showdown-dark-border'
-                }`}
-              >
-                {t.name}
-              </button>
-            ))}
+          {teams.length > 1 && (
+            <>
+              {/* Mobile / many teams: compact selector to avoid overflowing UI */}
+              <label className="flex w-full items-center gap-2 text-xs text-gray-500 sm:w-auto">
+                <span className="shrink-0">Team</span>
+                <select
+                  value={active.id}
+                  onChange={(e) => {
+                    setActiveTeam(e.target.value)
+                    setSelectedSlot(null)
+                  }}
+                  className="w-full min-w-0 flex-1 rounded border border-showdown-border bg-white px-2 py-1 text-sm font-medium dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
+                >
+                  {teams.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {/* Desktop / few teams: keep quick buttons */}
+              {teams.length <= 4 && (
+                <div className="hidden flex-wrap gap-1 md:flex">
+                  {teams.map((t) => (
+                    <button
+                      key={`btn-${t.id}`}
+                      type="button"
+                      onClick={() => {
+                        setActiveTeam(t.id)
+                        setSelectedSlot(null)
+                      }}
+                      className={`rounded px-2.5 py-1 text-xs ${
+                        t.id === active.id
+                          ? 'bg-showdown-accent text-white'
+                          : 'border border-showdown-border dark:border-showdown-dark-border'
+                      }`}
+                    >
+                      {t.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
 
           <input
             className="min-w-[8rem] flex-1 rounded border border-showdown-border bg-white px-2 py-1 text-sm font-medium dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
