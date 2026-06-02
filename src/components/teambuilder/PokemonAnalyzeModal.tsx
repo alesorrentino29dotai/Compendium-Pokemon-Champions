@@ -5,6 +5,8 @@ import { useMetaSync } from '../../hooks/useMetaSync'
 import { buildPokemonAnalyze } from '../../lib/pokemonAnalyze'
 import type { PokemonSet } from '../../types/team'
 import { PokemonSprite } from '../PokemonSprite'
+import { TypeBadgeRow } from '../TypeBadge'
+import { TypeEffectivenessChart } from '../TypeEffectivenessChart'
 import { loadDex } from '../../data/loadDex'
 
 export interface PokemonAnalyzeModalProps {
@@ -26,26 +28,6 @@ function UsageBar({ label, pct }: { label: string; pct: number }) {
         />
       </div>
       <span className="w-10 shrink-0 text-right text-gray-500">{pct}%</span>
-    </div>
-  )
-}
-
-function TypePills({ types, variant }: { types: string[]; variant: 'weak' | 'resist' | 'immune' }) {
-  if (!types.length) return <span className="text-xs text-gray-400">—</span>
-  const colors =
-    variant === 'weak'
-      ? 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-200'
-      : variant === 'immune'
-        ? 'bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
-        : 'bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200'
-
-  return (
-    <div className="flex flex-wrap gap-1">
-      {types.map((t) => (
-        <span key={t} className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${colors}`}>
-          {t}
-        </span>
-      ))}
     </div>
   )
 }
@@ -94,9 +76,11 @@ export function PokemonAnalyzeModal({ set, open, onClose }: PokemonAnalyzeModalP
             <h2 id="analyze-title" className="text-lg font-semibold">
               {data.speciesName}
             </h2>
-            <p className="text-sm text-gray-500">
-              {data.types.join(' / ')} · VGC sheet appearances:{' '}
-              <strong>{data.vgcAppearances}</strong>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <TypeBadgeRow types={data.types} />
+            </div>
+            <p className="mt-1 text-sm text-gray-500">
+              VGC appearances: <strong>{data.vgcAppearances}</strong>
             </p>
             <a
               href={data.pokemonZoneUrl}
@@ -156,33 +140,7 @@ export function PokemonAnalyzeModal({ set, open, onClose }: PokemonAnalyzeModalP
             </ul>
           </section>
 
-          <section>
-            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-              Type chart (defensive)
-            </h3>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div>
-                <p className="mb-1 text-[10px] font-medium text-red-600">4× weak</p>
-                <TypePills types={data.effectiveness.weak4x} variant="weak" />
-              </div>
-              <div>
-                <p className="mb-1 text-[10px] font-medium text-red-500">2× weak</p>
-                <TypePills types={data.effectiveness.weak2x} variant="weak" />
-              </div>
-              <div>
-                <p className="mb-1 text-[10px] font-medium text-green-600">2× resist</p>
-                <TypePills types={data.effectiveness.resist2x} variant="resist" />
-              </div>
-              <div>
-                <p className="mb-1 text-[10px] font-medium text-green-700">4× resist</p>
-                <TypePills types={data.effectiveness.resist4x} variant="resist" />
-              </div>
-              <div className="sm:col-span-2">
-                <p className="mb-1 text-[10px] font-medium text-gray-600">Immune</p>
-                <TypePills types={data.effectiveness.immune} variant="immune" />
-              </div>
-            </div>
-          </section>
+          <TypeEffectivenessChart effectiveness={data.effectiveness} />
 
           {data.metaBuilds.length > 0 && (
             <section>

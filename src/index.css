@@ -13,6 +13,12 @@
   --color-showdown-dark-bg: #1a1a2e;
   --color-showdown-dark-panel: #252538;
   --color-showdown-dark-border: #3d3d52;
+
+  /* Pokémon Zone–style type effectiveness panels */
+  --color-eff-weak-4: #fde8e8;
+  --color-eff-weak-2: #fff3e8;
+  --color-eff-resist-2: #e8f5ec;
+  --color-eff-resist-4: #f0f7e8;
 }
 
 @layer base {
@@ -50,6 +56,90 @@
     body {
       @apply bg-showdown-dark-bg text-gray-200;
     }
+  }
+}
+
+@layer components {
+  /* Showdown / Pokémon Zone type badge colors */
+  .pkmn-type {
+    display: inline-block;
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #fff !important;
+    text-shadow: 0 1px 1px rgb(0 0 0 / 25%);
+  }
+
+  .pkmn-type-normal {
+    background-color: #a8a878;
+  }
+  .pkmn-type-fire {
+    background-color: #f08030;
+  }
+  .pkmn-type-water {
+    background-color: #6890f0;
+  }
+  .pkmn-type-electric {
+    background-color: #f8d030;
+    color: #1a1a1a !important;
+    text-shadow: none;
+  }
+  .pkmn-type-grass {
+    background-color: #78c850;
+  }
+  .pkmn-type-ice {
+    background-color: #98d8d8;
+    color: #1a1a1a !important;
+    text-shadow: none;
+  }
+  .pkmn-type-fighting {
+    background-color: #c03028;
+  }
+  .pkmn-type-poison {
+    background-color: #a040a0;
+  }
+  .pkmn-type-ground {
+    background-color: #e0c068;
+    color: #1a1a1a !important;
+    text-shadow: none;
+  }
+  .pkmn-type-flying {
+    background-color: #a890f0;
+  }
+  .pkmn-type-psychic {
+    background-color: #f85888;
+  }
+  .pkmn-type-bug {
+    background-color: #a8b820;
+  }
+  .pkmn-type-rock {
+    background-color: #b8a038;
+  }
+  .pkmn-type-ghost {
+    background-color: #705898;
+  }
+  .pkmn-type-dragon {
+    background-color: #7038f8;
+  }
+  .pkmn-type-dark {
+    background-color: #705848;
+  }
+  .pkmn-type-steel {
+    background-color: #b8b8d0;
+    color: #1a1a1a !important;
+    text-shadow: none;
+  }
+  .pkmn-type-fairy {
+    background-color: #ee99ac;
+    color: #1a1a1a !important;
+    text-shadow: none;
+  }
+  .pkmn-type-stellar {
+    background-color: #73cec5;
+    color: #1a1a1a !important;
+    text-shadow: none;
   }
 }
 
