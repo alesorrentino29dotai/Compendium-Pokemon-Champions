@@ -18,21 +18,21 @@ import { useShallow } from 'zustand/react/shallow'
 
 const WEATHER_OPTIONS: { value: CalcFieldOptions['weather']; label: string }[] =
   [
-    { value: '', label: 'Nessuno' },
-    { value: 'Sun', label: 'Sole' },
-    { value: 'Rain', label: 'Pioggia' },
-    { value: 'Sand', label: 'Sabbia' },
-    { value: 'Snow', label: 'Neve' },
-    { value: 'Hail', label: 'Grandine' },
+    { value: '', label: 'None' },
+    { value: 'Sun', label: 'Sun' },
+    { value: 'Rain', label: 'Rain' },
+    { value: 'Sand', label: 'Sand' },
+    { value: 'Snow', label: 'Snow' },
+    { value: 'Hail', label: 'Hail' },
   ]
 
 const TERRAIN_OPTIONS: { value: CalcFieldOptions['terrain']; label: string }[] =
   [
-    { value: '', label: 'Nessuno' },
-    { value: 'Electric', label: 'Elettrico' },
-    { value: 'Grassy', label: 'Erba' },
-    { value: 'Misty', label: 'Nebbia' },
-    { value: 'Psychic', label: 'Psico' },
+    { value: '', label: 'None' },
+    { value: 'Electric', label: 'Electric' },
+    { value: 'Grassy', label: 'Grassy' },
+    { value: 'Misty', label: 'Misty' },
+    { value: 'Psychic', label: 'Psychic' },
   ]
 
 function cloneSet(set: PokemonSet): PokemonSet {
@@ -146,18 +146,13 @@ export function DamageCalc() {
         )
       : []
 
-  const attackerLabel = attacker ? pokemonLabel(attacker) : 'Attaccante'
-  const defenderLabel = defender ? pokemonLabel(defender) : 'Difensore'
+  const defenderLabel = defender ? pokemonLabel(defender) : 'Defender'
+  const attackerLabelEn = attacker ? pokemonLabel(attacker) : 'Attacker'
 
   return (
     <div className="flex flex-col gap-6">
       <header>
         <h2 className="text-xl font-medium">Damage Calculator</h2>
-        <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-          Calcolo danni Gen 9 con statistiche Pokémon Champions (SP). Tutte le
-          mosse configurate vengono simulate in tempo reale per entrambi i
-          Pokémon.
-        </p>
       </header>
 
       <section className="rounded-lg border border-showdown-border bg-showdown-panel p-3 shadow-sm sm:p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
@@ -166,7 +161,7 @@ export function DamageCalc() {
         </h3>
         <div className="grid gap-3 sm:grid-cols-3">
           <label className="text-xs text-gray-500">
-            Formato
+            Format
             <select
               value={field.gameType}
               onChange={(e) =>
@@ -176,13 +171,13 @@ export function DamageCalc() {
               }
               className="mt-0.5 w-full rounded border border-showdown-border bg-white px-2 py-1.5 text-sm dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
             >
-              <option value="Doubles">Doppio (VGC)</option>
-              <option value="Singles">Singolo</option>
+              <option value="Doubles">Doubles (VGC)</option>
+              <option value="Singles">Singles</option>
             </select>
           </label>
 
           <label className="text-xs text-gray-500">
-            Meteo
+            Weather
             <select
               value={field.weather}
               onChange={(e) =>
@@ -201,7 +196,7 @@ export function DamageCalc() {
           </label>
 
           <label className="text-xs text-gray-500">
-            Terreno
+            Terrain
             <select
               value={field.terrain}
               onChange={(e) =>
@@ -231,36 +226,36 @@ export function DamageCalc() {
         <div className="mt-4 space-y-4">
           <div className="rounded border border-showdown-border/80 p-3 dark:border-showdown-dark-border/80">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-showdown-accent">
-              {attackerLabel} → {defenderLabel}
+              {attackerLabelEn} → {defenderLabel}
             </p>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
               <CheckboxField
-                label="Helping Hand (attaccante)"
+                label="Helping Hand (attacker)"
                 checked={field.helpingHandOnAttacker}
                 onChange={(v) => patchField({ helpingHandOnAttacker: v })}
               />
               <CheckboxField
-                label="Riflesso (difensore)"
+                label="Reflect (defender)"
                 checked={field.reflectOnDefender}
                 onChange={(v) => patchField({ reflectOnDefender: v })}
               />
               <CheckboxField
-                label="Schermoluce (difensore)"
+                label="Light Screen (defender)"
                 checked={field.lightScreenOnDefender}
                 onChange={(v) => patchField({ lightScreenOnDefender: v })}
               />
               <CheckboxField
-                label="Velaurora (difensore)"
+                label="Aurora Veil (defender)"
                 checked={field.auroraVeilOnDefender}
                 onChange={(v) => patchField({ auroraVeilOnDefender: v })}
               />
               <CheckboxField
-                label="Friend Guard (difensore)"
+                label="Friend Guard (defender)"
                 checked={field.friendGuardOnDefender}
                 onChange={(v) => patchField({ friendGuardOnDefender: v })}
               />
               <CheckboxField
-                label="Protezione (difensore)"
+                label="Protect (defender)"
                 checked={field.protectOnDefender}
                 onChange={(v) => patchField({ protectOnDefender: v })}
               />
@@ -269,36 +264,36 @@ export function DamageCalc() {
 
           <div className="rounded border border-showdown-border/80 p-3 dark:border-showdown-dark-border/80">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-showdown-accent">
-              {defenderLabel} → {attackerLabel}
+              {defenderLabel} → {attackerLabelEn}
             </p>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
               <CheckboxField
-                label="Helping Hand (difensore)"
+                label="Helping Hand (defender)"
                 checked={field.helpingHandOnDefender}
                 onChange={(v) => patchField({ helpingHandOnDefender: v })}
               />
               <CheckboxField
-                label="Riflesso (attaccante)"
+                label="Reflect (attacker)"
                 checked={field.reflectOnAttacker}
                 onChange={(v) => patchField({ reflectOnAttacker: v })}
               />
               <CheckboxField
-                label="Schermoluce (attaccante)"
+                label="Light Screen (attacker)"
                 checked={field.lightScreenOnAttacker}
                 onChange={(v) => patchField({ lightScreenOnAttacker: v })}
               />
               <CheckboxField
-                label="Velaurora (attaccante)"
+                label="Aurora Veil (attacker)"
                 checked={field.auroraVeilOnAttacker}
                 onChange={(v) => patchField({ auroraVeilOnAttacker: v })}
               />
               <CheckboxField
-                label="Friend Guard (attaccante)"
+                label="Friend Guard (attacker)"
                 checked={field.friendGuardOnAttacker}
                 onChange={(v) => patchField({ friendGuardOnAttacker: v })}
               />
               <CheckboxField
-                label="Protezione (attaccante)"
+                label="Protect (attacker)"
                 checked={field.protectOnAttacker}
                 onChange={(v) => patchField({ protectOnAttacker: v })}
               />
@@ -348,17 +343,16 @@ export function DamageCalc() {
         aria-live="polite"
       >
         <h3 className="mb-4 text-sm font-semibold text-showdown-accent">
-          Risultati
+          Results
         </h3>
         {!attacker || !defender ? (
           <p className="text-sm text-gray-500">
-            Configura attaccante e difensore per vedere la simulazione di tutte
-            le mosse.
+            Set attacker and defender to see damage ranges for all configured moves.
           </p>
         ) : (
           <DamageResults
             key={`${attackerKey}|${defenderKey}|${fieldKey}|${critKey}`}
-            attackerLabel={attackerLabel}
+            attackerLabel={attackerLabelEn}
             defenderLabel={defenderLabel}
             attackerToDefender={attackerToDefender}
             defenderToAttacker={defenderToAttacker}

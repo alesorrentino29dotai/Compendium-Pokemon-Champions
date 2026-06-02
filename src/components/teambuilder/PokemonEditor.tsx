@@ -17,8 +17,6 @@ export interface PokemonEditorProps {
   set: PokemonSet
   onChange: (patch: Partial<PokemonSet>) => void
   onClear: () => void
-  /** Hide nickname row (damage calc panels). */
-  compact?: boolean
   /** Per-slot critical hit toggles (damage calc). */
   moveCrits?: MoveSlotCrits
   onMoveCritChange?: (slot: number, isCrit: boolean) => void
@@ -30,7 +28,6 @@ export function PokemonEditor({
   set,
   onChange,
   onClear,
-  compact = false,
   moveCrits,
   onMoveCritChange,
   onEvsPatch,
@@ -90,29 +87,15 @@ export function PokemonEditor({
               onClick={onClear}
               className="text-xs text-red-600 hover:underline"
             >
-              Rimuovi
+              Remove
             </button>
           </div>
-          {!compact && (
-            <label className="block text-xs text-gray-500">
-              Soprannome
-              <input
-                type="text"
-                value={set.nickname ?? ''}
-                onChange={(e) =>
-                  onChange({ nickname: e.target.value || undefined })
-                }
-                placeholder={set.speciesName}
-                className="mt-0.5 w-full max-w-xs rounded border border-showdown-border bg-white px-2 py-1 text-sm dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
-              />
-            </label>
-          )}
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <label className="text-xs text-gray-500">
-          Abilità
+          Ability
           <select
             value={set.ability}
             onChange={(e) => onChange({ ability: e.target.value })}
@@ -127,7 +110,7 @@ export function PokemonEditor({
         </label>
 
         <label className="text-xs text-gray-500">
-          Natura
+          Nature
           <select
             value={set.nature}
             onChange={(e) => onChange({ nature: e.target.value })}
@@ -142,12 +125,12 @@ export function PokemonEditor({
         </label>
 
         <label className="text-xs text-gray-500">
-          Strumento
+          Item
           <SearchableSelect
             value={set.item}
             options={items}
             onChange={(item) => onChange({ item })}
-            placeholder="Cerca oggetto…"
+            placeholder="Search item…"
             className="mt-0.5"
           />
         </label>
@@ -155,18 +138,18 @@ export function PokemonEditor({
 
       <div>
         <p className="mb-2 text-xs font-medium text-gray-600 dark:text-gray-300">
-          Mosse
+          Moves
         </p>
         <div className="grid gap-2 sm:grid-cols-2">
           {set.moves.map((move, i) => (
             <div key={i} className="space-y-1">
               <label className="text-xs text-gray-500">
-                Mossa {i + 1}
+                Move {i + 1}
                 <SearchableSelect
                   value={move}
                   options={moves}
                   onChange={(m) => updateMove(i, m)}
-                  placeholder="Cerca mossa…"
+                  placeholder="Search move…"
                   className="mt-0.5"
                 />
               </label>
@@ -178,7 +161,7 @@ export function PokemonEditor({
                     onChange={(e) => onMoveCritChange(i, e.target.checked)}
                     className="accent-showdown-accent"
                   />
-                  Critico
+                  Critical
                 </label>
               )}
             </div>

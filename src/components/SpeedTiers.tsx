@@ -59,10 +59,6 @@ export function SpeedTiers() {
     <div className="flex flex-col gap-6">
       <header>
         <h2 className="text-xl font-medium">Speed Tiers</h2>
-        <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-          Velocità Champions a liv. 50. Qui puoi fare simulazioni di SP e natura
-          (+Spe / neutro / −Spe) senza modificare il team nel Teambuilder.
-        </p>
       </header>
 
       {team ? (
@@ -76,7 +72,7 @@ export function SpeedTiers() {
       ) : (
         <section className="rounded-lg border border-showdown-border bg-showdown-panel p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
           <p className="text-sm text-gray-500">
-            Nessun team attivo. Creane uno dal Teambuilder.
+            No active team. Create one in the Teambuilder tab.
           </p>
         </section>
       )}

@@ -2,11 +2,7 @@ import { useMemo } from 'react'
 
 import type { NatureEntry, StatName } from '../../data/types'
 import type { StatsRecord } from '../../types/team'
-import {
-  CHAMPIONS_FIXED_IV,
-  MAX_SP_PER_STAT,
-  MAX_SP_TOTAL,
-} from '../../types/team'
+import { MAX_SP_PER_STAT, MAX_SP_TOTAL } from '../../types/team'
 import { clampStatPoints } from '../../lib/pokemonSet'
 import { calcChampionsStats, isValidStatPointSpread, totalStatPoints } from '../../lib/stats'
 
@@ -76,8 +72,7 @@ export function StatBar({
       </div>
 
       <p className="text-[10px] leading-snug text-gray-400">
-        Regole Pokémon Champions: ogni SP aggiunge +1 alla stat a liv. 50. IV
-        fissi a {CHAMPIONS_FIXED_IV} (non influenzano il calcolo).
+        Distribute SP across stats (max {MAX_SP_TOTAL} total).
       </p>
 
       <div className="scroll-touch">
@@ -87,7 +82,7 @@ export function StatBar({
               <th className="pb-1 pr-2 font-medium">Stat</th>
               <th className="pb-1 pr-2 font-medium">Base</th>
               <th className="pb-1 pr-2 font-medium">SP</th>
-              <th className="pb-1 font-medium">Totale</th>
+              <th className="pb-1 font-medium">Total</th>
             </tr>
           </thead>
           <tbody>

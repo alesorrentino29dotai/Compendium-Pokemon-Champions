@@ -16,17 +16,17 @@ import { SpeedModifiersBar } from './SpeedModifiersBar'
 import { SpSpeControl } from './SpSpeControl'
 
 const NATURE_FILTERS: { id: NatureSpeedCase | 'all'; label: string }[] = [
-  { id: 'all', label: 'Tutte le nature' },
+  { id: 'all', label: 'All natures' },
   { id: 'positive', label: '+Spe' },
-  { id: 'neutral', label: 'Neutro' },
+  { id: 'neutral', label: 'Neutral' },
   { id: 'negative', label: '−Spe' },
 ]
 
 const SORT_OPTIONS: { id: ReferenceSortKey; label: string }[] = [
-  { id: 'positive', label: 'Spe finale (+Spe)' },
-  { id: 'neutral', label: 'Spe finale (neutro)' },
-  { id: 'negative', label: 'Spe finale (−Spe)' },
-  { id: 'name', label: 'Nome A–Z' },
+  { id: 'positive', label: 'Final Speed (+Spe)' },
+  { id: 'neutral', label: 'Final Speed (neutral)' },
+  { id: 'negative', label: 'Final Speed (−Spe)' },
+  { id: 'name', label: 'Name A–Z' },
 ]
 
 function SpeCell({ cell, emphasize }: { cell: NatureSpeedCell; emphasize?: boolean }) {
@@ -78,36 +78,34 @@ export function ReferenceSpeedGrid({
       <div className="border-b border-showdown-border p-3 sm:p-4 dark:border-showdown-dark-border">
         <div>
           <h3 className="text-sm font-semibold text-showdown-accent">
-            Database soglie Reg M-A
+            Reference speed database
           </h3>
           <p className="mt-0.5 text-xs text-gray-500">
-            Stesso SP in Velocità per tutte le specie (default {REFERENCE_SP_SPE}) ·
-            colonne +Spe, neutro e −Spe
-            {rows.length > 0 && ` · ${rows.length} specie`}
+            {rows.length > 0 ? `${rows.length} species` : ''}
           </p>
         </div>
 
         <div className="mt-4 rounded-md border border-showdown-border/60 bg-showdown-hover/30 p-3 dark:border-showdown-dark-border/60 dark:bg-showdown-dark-panel/40">
           <p className="mb-2 text-xs font-medium text-gray-600 dark:text-gray-300">
-            Modificatori di campo
+            Modifiers
           </p>
           <SpeedModifiersBar mods={mods} onChange={onModsChange} compact />
         </div>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <label className="text-xs text-gray-500 sm:col-span-2 lg:col-span-1">
-            Cerca Pokémon
+            Search Pokémon
             <input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Nome o id…"
+              placeholder="Name or id…"
               className="mt-1 w-full rounded-md border border-showdown-border bg-white px-3 py-2 text-sm shadow-sm focus:border-showdown-accent focus:outline-none focus:ring-1 focus:ring-showdown-accent dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
             />
           </label>
 
           <label className="text-xs text-gray-500">
-            Filtra natura
+            Nature filter
             <select
               value={natureFilter}
               onChange={(e) =>
@@ -124,7 +122,7 @@ export function ReferenceSpeedGrid({
           </label>
 
           <label className="text-xs text-gray-500">
-            Ordina per
+            Sort by
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as ReferenceSortKey)}
@@ -142,7 +140,7 @@ export function ReferenceSpeedGrid({
 
       {rows.length === 0 ? (
         <p className="p-6 text-center text-sm text-gray-500">
-          Nessun Pokémon corrisponde ai filtri.
+          No Pokémon match the filters.
         </p>
       ) : (
         <div className="scroll-touch max-h-[min(70vh,32rem)] max-w-full">

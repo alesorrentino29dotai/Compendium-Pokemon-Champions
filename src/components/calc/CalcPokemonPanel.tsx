@@ -135,7 +135,6 @@ export function CalcPokemonPanel({
               onBoostsChange({})
               onResetMoveCrits()
             }}
-            compact
             moveCrits={moveCrits}
             onMoveCritChange={onMoveCritChange}
             onEvsPatch={onEvsPatch}

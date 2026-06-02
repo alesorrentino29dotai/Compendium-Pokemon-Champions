@@ -33,13 +33,13 @@ export function SpeedModifiersBar({
           onChange={(v) => onChange({ tailwind: v })}
         />
         <CheckboxField
-          label="Paralisi"
+          label="Paralysis"
           checked={!!mods.paralysis}
           onChange={(v) => onChange({ paralysis: v })}
         />
       </div>
       <label className="block text-xs text-gray-500">
-        Stadio Velocità
+        Speed stage
         <select
           value={mods.statStages ?? 0}
           onChange={(e) => onChange({ statStages: Number(e.target.value) })}
