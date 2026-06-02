@@ -153,12 +153,12 @@ export function Teambuilder() {
           <div className="ml-auto flex flex-wrap gap-2">
             <button
               type="button"
-              disabled={filledCount < 2}
+              disabled={filledCount < 1}
               onClick={() => setCompleteOpen(true)}
               className="rounded border border-showdown-border px-2 py-1 text-xs hover:bg-showdown-hover disabled:cursor-not-allowed disabled:opacity-40 dark:border-showdown-dark-border"
               title={
-                filledCount < 2
-                  ? 'Select at least 2 Pokémon to suggest teams from the VGC sheet'
+                filledCount < 1
+                  ? 'Add at least one Pokémon to suggest teams from the VGC sheet'
                   : 'Complete team from VGCPastes spreadsheet'
               }
             >

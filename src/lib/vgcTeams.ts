@@ -323,7 +323,7 @@ export function findTeamCompleteSuggestions(
   } = {},
 ): TeamCompleteSuggestion[] {
   const selected = [...new Set(selectedSpeciesIds.filter(Boolean))]
-  if (selected.length < 2) return []
+  if (selected.length < 1) return []
 
   const {
     exactLimit = 6,

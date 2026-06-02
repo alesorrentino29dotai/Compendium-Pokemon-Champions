@@ -149,7 +149,7 @@ export function TeamCompleteModal({
         <div className="flex-1 space-y-4 overflow-y-auto px-4 py-3">
           {!hasAny ? (
             <p className="py-8 text-center text-sm text-gray-500">
-              No suggestions found. Select at least 2 Pokémon.
+              No suggestions found. Add a Pokémon to your team first.
             </p>
           ) : (
             <>
