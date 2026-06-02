@@ -191,7 +191,7 @@ export function SpeciesSearchSelect({
               // Mobile: bottom sheet
               'fixed inset-x-0 bottom-0 z-50 sm:absolute sm:bottom-auto sm:inset-auto',
               // Desktop: anchor under trigger and allow wider popover
-              'sm:left-0 sm:mt-1 sm:w-max sm:min-w-[24rem] sm:max-w-[min(44rem,calc(100vw-1rem))]',
+              'sm:left-0 sm:mt-1 sm:w-[min(56rem,calc(100vw-1rem))] sm:min-w-[min(32rem,calc(100vw-1rem))]',
               // Shared panel styling
               'flex max-h-[80dvh] flex-col overflow-hidden border border-showdown-border bg-white shadow-xl',
               // Mobile rounding / safe area
