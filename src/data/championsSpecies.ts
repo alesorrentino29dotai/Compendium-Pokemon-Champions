@@ -57,6 +57,7 @@ export function getChampionsSpeciesList(): ChampionsSpeciesEntry[] {
   // Mega ufficiali: derivate da pokedex.json, limitate a base species presenti nel roster.
   const allowedBaseSpecies = new Set(base.map((s) => s.baseSpecies))
   const megas: ChampionsSpeciesEntry[] = []
+  const extraFormes: ChampionsSpeciesEntry[] = []
 
   for (const [id, entry] of Object.entries(dex.pokedex)) {
     if (!isOfficialMega(entry)) continue
@@ -65,8 +66,22 @@ export function getChampionsSpeciesList(): ChampionsSpeciesEntry[] {
     megas.push(toChampionsEntry(id, entry))
   }
 
+  // Rotom appliance formes (official, same base species).
+  if (allowedBaseSpecies.has('Rotom')) {
+    const rotomFormes = ['rotomheat', 'rotomwash', 'rotomfrost', 'rotomfan', 'rotommow']
+    for (const id of rotomFormes) {
+      const entry = dex.pokedex[id]
+      if (!entry) continue
+      const baseSpecies = String((entry as any).baseSpecies ?? '')
+      if (baseSpecies !== 'Rotom') continue
+      if (typeof entry.num !== 'number' || entry.num < 1) continue
+      extraFormes.push(toChampionsEntry(id, entry))
+    }
+  }
+
   megas.sort((a, b) => a.name.localeCompare(b.name))
-  cachedList = [...base, ...megas]
+  extraFormes.sort((a, b) => a.name.localeCompare(b.name))
+  cachedList = [...base, ...extraFormes, ...megas]
   return cachedList
 }
 

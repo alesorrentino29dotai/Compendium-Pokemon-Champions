@@ -7,11 +7,22 @@ export function getLearnsetMoveNames(
   dex: DexBundle,
 ): string[] {
   const entry = dex.learnsets[speciesId]
-  if (!entry?.learnset) return []
+  let learnset = entry?.learnset
+
+  // Many forme (ex: Mega) reuse the base species learnset in Showdown.
+  if (!learnset) {
+    const species = dex.pokedex[speciesId]
+    const baseSpeciesName =
+      (species?.baseSpecies as string | undefined) || species?.name
+    const baseId = baseSpeciesName ? toId(baseSpeciesName) : ''
+    learnset = (baseId && dex.learnsets[baseId]?.learnset) || undefined
+  }
+
+  if (!learnset) return []
 
   const names = new Set<string>()
 
-  for (const [moveId, sources] of Object.entries(entry.learnset)) {
+  for (const [moveId, sources] of Object.entries(learnset)) {
     if (!Array.isArray(sources)) continue
     if (sources.length === 0) continue
 
