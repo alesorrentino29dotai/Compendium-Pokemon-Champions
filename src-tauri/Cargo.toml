@@ -1,6 +1,6 @@
-[
-  package
-]
+build = "build.rs"
+
+[package]
 name = "compendium"
 version = "0.1.0"
 description = "Compendium — Pokémon Champions VGC"
