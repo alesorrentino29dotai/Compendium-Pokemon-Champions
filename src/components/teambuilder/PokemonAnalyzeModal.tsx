@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { useMetaSync } from '../../hooks/useMetaSync'
+
 import { buildPokemonAnalyze } from '../../lib/pokemonAnalyze'
 import type { PokemonSet } from '../../types/team'
 import { PokemonSprite } from '../PokemonSprite'
@@ -50,9 +52,10 @@ function TypePills({ types, variant }: { types: string[]; variant: 'weak' | 'res
 
 export function PokemonAnalyzeModal({ set, open, onClose }: PokemonAnalyzeModalProps) {
   const dex = loadDex()
+  const { dataRevision } = useMetaSync()
   const data = useMemo(
     () => buildPokemonAnalyze(set.speciesId, { nature: set.nature, evs: set.evs }),
-    [set.speciesId, set.nature, set.evs],
+    [set.speciesId, set.nature, set.evs, dataRevision],
   )
 
   if (!open || !data) return null

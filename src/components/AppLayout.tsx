@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { DataSyncStatus } from './DataSyncStatus'
+
 export type AppTab = 'teambuilder' | 'calc' | 'speed' | 'search'
 
 export interface AppLayoutProps {
@@ -90,6 +92,7 @@ export function AppLayout({
           <nav className="hidden flex-1 gap-1 overflow-x-auto md:flex">
             {TABS.map((tab) => renderTab(tab, false))}
           </nav>
+          <DataSyncStatus />
         </div>
       </header>
 

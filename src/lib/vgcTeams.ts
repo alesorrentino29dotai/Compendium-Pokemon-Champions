@@ -63,14 +63,34 @@ export interface VgcTeamsBundle {
   speciesStats: Record<string, VgcSpeciesStats>
 }
 
-const bundle = vgcTeamsJson as VgcTeamsBundle
+const bundledVgc = vgcTeamsJson as VgcTeamsBundle
+let activeBundle: VgcTeamsBundle = bundledVgc
+
+const listeners = new Set<() => void>()
+
+export function getBundledVgcTeams(): VgcTeamsBundle {
+  return bundledVgc
+}
 
 export function getVgcTeamsBundle(): VgcTeamsBundle {
-  return bundle
+  return activeBundle
+}
+
+export function setActiveVgcBundle(bundle: VgcTeamsBundle): void {
+  activeBundle = bundle
+}
+
+export function subscribeVgcData(listener: () => void): () => void {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
+}
+
+export function notifyVgcDataChanged(): void {
+  listeners.forEach((l) => l())
 }
 
 export function getVgcSpeciesStats(speciesId: string): VgcSpeciesStats | null {
-  return bundle.speciesStats[speciesId] ?? null
+  return activeBundle.speciesStats[speciesId] ?? null
 }
 
 export function pokemonZoneUrl(speciesId: string): string {
@@ -335,7 +355,7 @@ export function findTeamCompleteSuggestions(
   const exact: TeamCompleteSuggestion[] = []
   const partial: TeamCompleteSuggestion[] = []
 
-  for (const team of bundle.teams) {
+  for (const team of activeBundle.teams) {
     const teamSet = new Set(team.speciesIds)
     const overlap = selected.filter((id) => teamSet.has(id))
     const overlapCount = overlap.length

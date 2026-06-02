@@ -21,7 +21,10 @@
     "data:fetch": "node scripts/fetch-showdown-data.mjs",
     "data:champions-species": "node scripts/export-champions-species.mjs",
     "data:vgc-teams": "node scripts/fetch-vgc-teams.mjs",
-    "data:all": "npm run data:fetch && npm run data:champions-species && npm run data:vgc-teams"
+    "data:pokemon-zone-meta": "node scripts/build-pokemon-zone-meta.mjs",
+    "data:publish-live": "node scripts/publish-live-data.mjs",
+    "data:sync-all": "npm run data:vgc-teams && npm run data:pokemon-zone-meta && npm run data:publish-live",
+    "data:all": "npm run data:fetch && npm run data:champions-species && npm run data:sync-all"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.4",

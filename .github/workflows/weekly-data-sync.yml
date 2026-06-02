@@ -1,0 +1,43 @@
+name: Weekly data sync
+
+on:
+  schedule:
+    # Mondays 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch VGC teams sheet + pokepastes
+        run: npm run data:vgc-teams
+
+      - name: Build Pokémon Zone meta fallback
+        run: node scripts/build-pokemon-zone-meta.mjs
+
+      - name: Publish live data bundle
+        run: node scripts/publish-live-data.mjs
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/vgcTeams.json src/data/pokemonZoneMeta.json public/data/live/
+          if git diff --staged --quiet; then
+            echo "No data changes"
+            exit 0
+          fi
+          git commit -m "chore(data): weekly VGCPastes and meta bundle update"
+          git push

@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { useMetaSync } from '../../hooks/useMetaSync'
+
 import {
   findTeamCompleteSuggestions,
   getSpeciesName,
@@ -105,9 +107,11 @@ export function TeamCompleteModal({
     [pokemon],
   )
 
+  const { dataRevision } = useMetaSync()
+
   const suggestions = useMemo(
     () => findTeamCompleteSuggestions(selectedIds),
-    [selectedIds],
+    [selectedIds, dataRevision],
   )
 
   const grouped = useMemo(() => {

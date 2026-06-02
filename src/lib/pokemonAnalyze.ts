@@ -3,6 +3,7 @@ import type { DexBundle, PokedexEntry } from '../data/types'
 import type { StatsRecord } from '../types/team'
 import { createZeroStats, calcChampionsStats } from './stats'
 import { getTypeEffectiveness, type TypeEffectiveness } from './typeEffectiveness'
+import { getPokemonZoneSpeciesMeta } from './pokemonZoneData'
 import {
   getSpeciesName,
   getVgcSpeciesStats,
@@ -44,7 +45,16 @@ export function buildPokemonAnalyze(
   const evs = sampleSet?.evs ?? createZeroStats()
 
   const vgc = getVgcSpeciesStats(speciesId)
+  const pz = getPokemonZoneSpeciesMeta(speciesId)
   const abilities = Object.values(species.abilities).filter(Boolean)
+
+  const teammatesSource = pz?.teammates?.length
+    ? pz.teammates
+    : (vgc?.teammates ?? [])
+  const itemsSource = pz?.items?.length ? pz.items : (vgc?.items ?? [])
+  const buildsSource: VgcBuildRow[] = pz?.builds?.length
+    ? pz.builds
+    : (vgc?.builds ?? [])
 
   return {
     speciesId,
@@ -58,13 +68,13 @@ export function buildPokemonAnalyze(
     }),
     abilities,
     effectiveness: getTypeEffectiveness(species.types, dex.typechart),
-    vgcAppearances: vgc?.appearances ?? 0,
-    teammates: (vgc?.teammates ?? []).map((t) => ({
+    vgcAppearances: pz?.appearances ?? vgc?.appearances ?? 0,
+    teammates: teammatesSource.map((t) => ({
       ...t,
       speciesName: getSpeciesName(t.speciesId),
     })),
-    topItems: vgc?.items ?? [],
-    metaBuilds: vgc?.builds ?? [],
+    topItems: itemsSource,
+    metaBuilds: buildsSource,
     pokemonZoneUrl: pokemonZoneUrl(speciesId),
   }
 }
