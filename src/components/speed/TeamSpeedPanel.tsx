@@ -8,7 +8,7 @@ import {
   type SpeedTierRow,
 } from '../../lib/speedTiers'
 import type { SpeedModifiers } from '../../lib/stats'
-import type { PokemonSet, StatsRecord } from '../../types/team'
+import type { PokemonSet } from '../../types/team'
 import { PokemonSprite } from '../PokemonSprite'
 import { NatureCasePicker } from './NatureCasePicker'
 import { SpeedModifiersBar } from './SpeedModifiersBar'

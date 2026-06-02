@@ -10,11 +10,11 @@ import {
 } from '../lib/smogonCalc'
 import { useDamageCalcStore } from '../store/useDamageCalcStore'
 import { useTeamStore } from '../store/useTeamStore'
-import type { PokemonSet, StatsRecord } from '../types/team'
+import type { PokemonSet } from '../types/team'
 import { CalcPokemonPanel } from './calc/CalcPokemonPanel'
 import { DamageResults } from './calc/DamageResults'
 import { CheckboxField } from './ui/CheckboxField'
-import { shallow } from 'zustand/shallow'
+import { useShallow } from 'zustand/react/shallow'
 
 const WEATHER_OPTIONS: { value: CalcFieldOptions['weather']; label: string }[] =
   [
@@ -70,7 +70,7 @@ export function DamageCalc() {
     setAttackerMoveCrit,
     setDefenderMoveCrit,
   } = useDamageCalcStore(
-    (s) => ({
+    useShallow((s) => ({
       attacker: s.attacker,
       defender: s.defender,
       attackerBoosts: s.attackerBoosts,
@@ -91,8 +91,7 @@ export function DamageCalc() {
       setDefenderCrits: s.setDefenderCrits,
       setAttackerMoveCrit: s.setAttackerMoveCrit,
       setDefenderMoveCrit: s.setDefenderMoveCrit,
-    }),
-    shallow,
+    })),
   )
 
   const team =
