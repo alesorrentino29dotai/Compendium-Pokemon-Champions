@@ -80,7 +80,7 @@ export const useTeamStore = create<TeamStore>()(
       duplicateTeam: (teamId) => {
         const source = get().teams.find((t) => t.id === teamId)
         if (!source) return null
-        const copy = newTeam(`${source.name} (copia)`)
+        const copy = newTeam(`${source.name} (copy)`)
         copy.pokemon = source.pokemon.map((p) =>
           p ? { ...p, moves: [...p.moves] as PokemonSet['moves'] } : null,
         )
@@ -114,6 +114,21 @@ export const useTeamStore = create<TeamStore>()(
             next[slot] = { ...current, ...patch }
             return touchTeam({ ...t, pokemon: next })
           }),
+        }))
+      },
+
+      setAllSlots: (teamId, pokemon) => {
+        set((state) => ({
+          teams: state.teams.map((t) =>
+            t.id === teamId
+              ? touchTeam({
+                  ...t,
+                  pokemon: pokemon.map((p) =>
+                    p ? { ...p, moves: [...p.moves] as PokemonSet['moves'] } : null,
+                  ) as (PokemonSet | null)[],
+                })
+              : t,
+          ),
         }))
       },
     }),

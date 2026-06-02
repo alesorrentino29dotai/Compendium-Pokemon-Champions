@@ -17,6 +17,7 @@ export interface PokemonEditorProps {
   set: PokemonSet
   onChange: (patch: Partial<PokemonSet>) => void
   onClear: () => void
+  onAnalyze?: () => void
   /** Per-slot critical hit toggles (damage calc). */
   moveCrits?: MoveSlotCrits
   onMoveCritChange?: (slot: number, isCrit: boolean) => void
@@ -28,6 +29,7 @@ export function PokemonEditor({
   set,
   onChange,
   onClear,
+  onAnalyze,
   moveCrits,
   onMoveCritChange,
   onEvsPatch,
@@ -82,6 +84,15 @@ export function PokemonEditor({
             <h3 className="text-lg font-semibold text-showdown-accent">
               {set.speciesName}
             </h3>
+            {onAnalyze && (
+              <button
+                type="button"
+                onClick={onAnalyze}
+                className="rounded border border-showdown-border px-2 py-0.5 text-xs hover:bg-showdown-hover dark:border-showdown-dark-border"
+              >
+                Analyze
+              </button>
+            )}
             <button
               type="button"
               onClick={onClear}

@@ -20,7 +20,8 @@
     "desktop:build": "tauri build",
     "data:fetch": "node scripts/fetch-showdown-data.mjs",
     "data:champions-species": "node scripts/export-champions-species.mjs",
-    "data:all": "npm run data:fetch && npm run data:champions-species"
+    "data:vgc-teams": "node scripts/fetch-vgc-teams.mjs",
+    "data:all": "npm run data:fetch && npm run data:champions-species && npm run data:vgc-teams"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.4",

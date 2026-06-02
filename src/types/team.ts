@@ -57,6 +57,7 @@ export interface TeamStoreActions {
     slot: number,
     patch: Partial<PokemonSet>,
   ) => void
+  setAllSlots: (teamId: string, pokemon: (PokemonSet | null)[]) => void
 }
 
 export type TeamStore = TeamStoreState & TeamStoreActions

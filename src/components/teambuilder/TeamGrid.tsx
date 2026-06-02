@@ -7,6 +7,7 @@ export interface TeamGridProps {
   selectedSlot: number | null
   onSelectSlot: (slot: number) => void
   onAddSlot: (slot: number) => void
+  onAnalyzeSlot?: (slot: number) => void
 }
 
 export function TeamGrid({
@@ -14,6 +15,7 @@ export function TeamGrid({
   selectedSlot,
   onSelectSlot,
   onAddSlot,
+  onAnalyzeSlot,
 }: TeamGridProps) {
   const dex = loadDex()
 
@@ -34,7 +36,7 @@ export function TeamGrid({
                 : 'border-showdown-border bg-white hover:border-showdown-accent/60 dark:border-showdown-dark-border dark:bg-showdown-dark-panel'
             } ${isEmpty ? 'border-dashed' : ''}`}
             aria-label={
-              isEmpty ? `Aggiungi Pokémon slot ${slot + 1}` : mon.speciesName
+              isEmpty ? `Add Pokémon slot ${slot + 1}` : mon.speciesName
             }
             aria-pressed={isSelected}
           >
@@ -53,6 +55,21 @@ export function TeamGrid({
                 {mon.item && (
                   <span className="mt-0.5 max-w-full truncate text-[9px] text-gray-400">
                     @ {mon.item}
+                  </span>
+                )}
+                {onAnalyzeSlot && (
+                  <span
+                    role="presentation"
+                    onClick={(e) => e.stopPropagation()}
+                    className="mt-1 w-full"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => onAnalyzeSlot(slot)}
+                      className="w-full rounded bg-showdown-accent/10 px-1 py-0.5 text-[9px] font-medium text-showdown-accent hover:bg-showdown-accent/20"
+                    >
+                      Analyze
+                    </button>
                   </span>
                 )}
               </>

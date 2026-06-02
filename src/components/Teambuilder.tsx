@@ -4,9 +4,12 @@ import type { ChampionsSpeciesEntry } from '../data/championsSpecies'
 import { loadDex } from '../data/loadDex'
 import { createEmptyPokemonSet } from '../lib/pokemonSet'
 import { exportTeamChampions, exportTeamShowdown } from '../lib/teamExport'
+import { applyVgcTeamToSlots } from '../lib/vgcTeams'
 import { useTeamStore } from '../store/useTeamStore'
+import { PokemonAnalyzeModal } from './teambuilder/PokemonAnalyzeModal'
 import { PokemonEditor } from './teambuilder/PokemonEditor'
 import { SpeciesPickerModal } from './teambuilder/SpeciesPickerModal'
+import { TeamCompleteModal } from './teambuilder/TeamCompleteModal'
 import { TeamGrid } from './teambuilder/TeamGrid'
 
 export function Teambuilder() {
@@ -19,10 +22,13 @@ export function Teambuilder() {
   const setActiveTeam = useTeamStore((s) => s.setActiveTeam)
   const renameTeam = useTeamStore((s) => s.renameTeam)
   const setSlot = useTeamStore((s) => s.setSlot)
+  const setAllSlots = useTeamStore((s) => s.setAllSlots)
   const updatePokemon = useTeamStore((s) => s.updatePokemon)
 
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null)
   const [pickerSlot, setPickerSlot] = useState<number | null>(null)
+  const [analyzeSlot, setAnalyzeSlot] = useState<number | null>(null)
+  const [completeOpen, setCompleteOpen] = useState(false)
 
   const team =
     teams.find((t) => t.id === activeTeamId) ?? teams[0] ?? null
@@ -81,6 +87,10 @@ export function Teambuilder() {
     effectiveSelectedSlot !== null
       ? active.pokemon[effectiveSelectedSlot]
       : null
+
+  const filledCount = active.pokemon.filter(Boolean).length
+  const analyzeMon =
+    analyzeSlot !== null ? active.pokemon[analyzeSlot] : null
 
   return (
     <>
@@ -141,6 +151,19 @@ export function Teambuilder() {
           />
 
           <div className="ml-auto flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={filledCount < 2}
+              onClick={() => setCompleteOpen(true)}
+              className="rounded border border-showdown-border px-2 py-1 text-xs hover:bg-showdown-hover disabled:cursor-not-allowed disabled:opacity-40 dark:border-showdown-dark-border"
+              title={
+                filledCount < 2
+                  ? 'Select at least 2 Pokémon to suggest teams from the VGC sheet'
+                  : 'Complete team from VGCPastes spreadsheet'
+              }
+            >
+              Complete team
+            </button>
             <button
               type="button"
               onClick={async () => {
@@ -204,6 +227,7 @@ export function Teambuilder() {
             selectedSlot={selectedSlot}
             onSelectSlot={setSelectedSlot}
             onAddSlot={(slot) => setPickerSlot(slot)}
+            onAnalyzeSlot={(slot) => setAnalyzeSlot(slot)}
           />
         </div>
 
@@ -215,6 +239,7 @@ export function Teambuilder() {
               onChange={(patch) =>
                 updatePokemon(active.id, effectiveSelectedSlot, patch)
               }
+              onAnalyze={() => setAnalyzeSlot(effectiveSelectedSlot)}
               onClear={() => {
                 setSlot(active.id, effectiveSelectedSlot, null)
                 setSelectedSlot(null)
@@ -240,6 +265,24 @@ export function Teambuilder() {
             ? `Slot ${pickerSlot + 1} — Choose Pokémon`
             : 'Choose Pokémon'
         }
+      />
+
+      {analyzeMon && (
+        <PokemonAnalyzeModal
+          set={analyzeMon}
+          open={analyzeSlot !== null}
+          onClose={() => setAnalyzeSlot(null)}
+        />
+      )}
+
+      <TeamCompleteModal
+        open={completeOpen}
+        onClose={() => setCompleteOpen(false)}
+        pokemon={active.pokemon}
+        onApply={(suggestion) => {
+          const next = applyVgcTeamToSlots(suggestion.team, active.pokemon)
+          setAllSlots(active.id, next)
+        }}
       />
     </>
   )
