@@ -223,7 +223,13 @@ export function SpeciesSearchSelect({
               </p>
             </div>
 
-            <ul className="overflow-y-auto overscroll-contain pb-[max(env(safe-area-inset-bottom),0.75rem)]">
+            <ul
+              className={`overflow-y-auto ${
+                useMobileSheet
+                  ? 'overscroll-contain pb-[max(env(safe-area-inset-bottom),0.75rem)]'
+                  : 'pb-2'
+              }`}
+            >
               {filtered.length === 0 ? (
                 <li className="px-3 py-6 text-center text-sm text-gray-400">
                   Nessun Pokémon trovato
