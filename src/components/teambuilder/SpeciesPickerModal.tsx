@@ -47,7 +47,7 @@ export function SpeciesPickerModal({
       onClick={onClose}
     >
       <div
-        className="flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-showdown-border bg-showdown-panel shadow-xl sm:rounded-lg dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
+        className="flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-showdown-border bg-showdown-panel shadow-xl sm:max-w-3xl sm:rounded-lg dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-showdown-border px-4 py-3 dark:border-showdown-dark-border">
@@ -74,7 +74,7 @@ export function SpeciesPickerModal({
           <p className="mt-4 mb-2 text-xs text-gray-400">
             Popolari (tocca per aggiungere)
           </p>
-          <div className="grid grid-cols-4 gap-2 sm:grid-cols-5">
+          <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
             {POPULAR_SPECIES.map((id) => {
               const entry = getChampionsSpeciesList().find((s) => s.id === id)
               if (!entry) return null
