@@ -57,8 +57,8 @@ export function CalcPokemonPanel({
   }
 
   const loadLabel = useMemo(() => {
-    if (teamLoadOptions.length === 0) return 'Nessun Pokémon nel team'
-    return 'Carica dal team'
+    if (teamLoadOptions.length === 0) return 'No Pokémon in team'
+    return 'Load from team'
   }, [teamLoadOptions.length])
 
   return (
@@ -98,14 +98,14 @@ export function CalcPokemonPanel({
       <SpeciesSearchSelect
         value={speciesId}
         onChange={handleSpecies}
-        placeholder="Cerca Pokémon…"
+        placeholder="Search Pokémon…"
       />
 
       {set ? (
         <>
           {teraOptions.length > 0 && (
-            <label className="text-xs text-gray-500">
-              Tera
+          <label className="text-xs text-gray-500">
+              Tera Type
               <select
                 value={set.teraType ?? ''}
                 onChange={(e) =>
@@ -115,7 +115,7 @@ export function CalcPokemonPanel({
                 }
                 className="mt-0.5 w-full rounded border border-showdown-border bg-white px-2 py-1.5 text-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel"
               >
-                <option value="">Nessuno</option>
+                <option value="">None</option>
                 {teraOptions.map((t) => (
                   <option key={t} value={t}>
                     {t}
@@ -142,7 +142,7 @@ export function CalcPokemonPanel({
         </>
       ) : (
         <p className="py-6 text-center text-sm text-gray-500">
-          Seleziona un Pokémon per configurare attaccante o difensore.
+          Select a Pokémon to configure attacker or defender.
         </p>
       )}
     </section>

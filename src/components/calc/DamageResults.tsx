@@ -21,7 +21,7 @@ function MoveTable({
     return (
       <div>
         <h4 className="mb-2 text-sm font-semibold text-showdown-accent">{title}</h4>
-        <p className="text-sm text-gray-500">Nessuna mossa configurata.</p>
+        <p className="text-sm text-gray-500">No moves selected.</p>
       </div>
     )
   }
@@ -33,10 +33,10 @@ function MoveTable({
         <table className="w-full min-w-[18rem] border-collapse text-sm">
           <thead>
             <tr className="border-b border-showdown-border text-left text-xs text-gray-500 dark:border-showdown-dark-border">
-              <th className="py-2 pr-3 font-medium">Mossa</th>
-              <th className="py-2 pr-3 font-medium">Danno</th>
+              <th className="py-2 pr-3 font-medium">Move</th>
+              <th className="py-2 pr-3 font-medium">Damage</th>
               <th className="py-2 pr-3 font-medium">%</th>
-              <th className="py-2 font-medium">KO / effetto</th>
+              <th className="py-2 font-medium">KO / effect</th>
             </tr>
           </thead>
           <tbody>

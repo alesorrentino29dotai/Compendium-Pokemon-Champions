@@ -33,7 +33,7 @@ function normalizeSearch(text: string): string {
 export function SpeciesSearchSelect({
   value,
   onChange,
-  placeholder = 'Cerca Pokémon…',
+  placeholder = 'Search Pokémon…',
   disabled = false,
   className = '',
   inline = false,
@@ -162,7 +162,7 @@ export function SpeciesSearchSelect({
               setHighlight(0)
             }}
             onKeyDown={onKeyDown}
-            placeholder="Nome o n° Pokédex…"
+            placeholder="Name or Pokédex #…"
             className="w-full rounded border border-showdown-border bg-showdown-bg px-3 py-2 text-sm outline-none focus:border-showdown-accent dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
             autoComplete="off"
             spellCheck={false}
@@ -171,14 +171,14 @@ export function SpeciesSearchSelect({
           />
           <p className="mt-1 text-[10px] text-gray-400">
             {filtered.length}
-            {filtered.length >= MAX_SEARCH_RESULTS ? '+' : ''} risultati · Reg M-A
+            {filtered.length >= MAX_SEARCH_RESULTS ? '+' : ''} results
           </p>
         </div>
 
         <ul className="min-h-0 flex-1 overflow-y-auto py-2">
           {filtered.length === 0 ? (
             <li className="px-3 py-6 text-center text-sm text-gray-400">
-              Nessun Pokémon trovato
+              No Pokémon found
             </li>
           ) : (
             filtered.map((species, i) => (
@@ -252,7 +252,7 @@ export function SpeciesSearchSelect({
               type="button"
               className="fixed inset-0 z-40 bg-black/40 sm:hidden"
               onClick={close}
-              aria-label="Chiudi ricerca Pokémon"
+              aria-label="Close Pokémon search"
             />
           )}
 
@@ -281,15 +281,14 @@ export function SpeciesSearchSelect({
                   setHighlight(0)
                 }}
                 onKeyDown={onKeyDown}
-                placeholder="Nome o n° Pokédex…"
+                placeholder="Name or Pokédex #…"
                 className="w-full rounded border border-showdown-border bg-showdown-bg px-3 py-2 text-sm outline-none focus:border-showdown-accent sm:px-2 sm:py-1.5 dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
                 autoComplete="off"
                 spellCheck={false}
               />
               <p className="mt-1 text-[10px] text-gray-400">
                 {filtered.length}
-                {filtered.length >= MAX_SEARCH_RESULTS ? '+' : ''} risultati · Reg
-                M-A
+                {filtered.length >= MAX_SEARCH_RESULTS ? '+' : ''} results
               </p>
             </div>
 
@@ -302,7 +301,7 @@ export function SpeciesSearchSelect({
             >
               {filtered.length === 0 ? (
                 <li className="px-3 py-6 text-center text-sm text-gray-400">
-                  Nessun Pokémon trovato
+                  No Pokémon found
                 </li>
               ) : (
                 filtered.map((species, i) => (
