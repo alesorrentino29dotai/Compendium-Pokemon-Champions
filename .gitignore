@@ -8,3 +8,4 @@ android/captures/
 *.apk
 *.aab
 .capacitor/
+node_modules/
