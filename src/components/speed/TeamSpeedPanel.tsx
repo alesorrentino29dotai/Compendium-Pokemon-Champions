@@ -19,9 +19,10 @@ export interface TeamSpeedPanelProps {
   pokemon: (PokemonSet | null)[]
   mods: SpeedModifiers
   onModsChange: (patch: Partial<SpeedModifiers>) => void
-  onUpdatePokemon: (
+  /** Local-only edits (no Teambuilder sync). */
+  onOverrideChange: (
     slot: number,
-    patch: Partial<PokemonSet> | { evs: StatsRecord },
+    patch: { nature?: PokemonSet['nature']; spe?: number },
   ) => void
 }
 
@@ -30,7 +31,7 @@ export function TeamSpeedPanel({
   pokemon,
   mods,
   onModsChange,
-  onUpdatePokemon,
+  onOverrideChange,
 }: TeamSpeedPanelProps) {
   const dex = loadDex()
 
@@ -88,16 +89,11 @@ export function TeamSpeedPanel({
                 dex={dex}
                 set={pokemon[row.teamSlot]!}
                 onNatureChange={(caseType) =>
-                  onUpdatePokemon(row.teamSlot, {
+                  onOverrideChange(row.teamSlot, {
                     nature: natureIdForCase(caseType, dex),
                   })
                 }
-                onSpChange={(spe) => {
-                  const current = pokemon[row.teamSlot]!
-                  onUpdatePokemon(row.teamSlot, {
-                    evs: { ...current.evs, spe },
-                  })
-                }}
+                onSpChange={(spe) => onOverrideChange(row.teamSlot, { spe })}
               />
             ))}
           </tbody>

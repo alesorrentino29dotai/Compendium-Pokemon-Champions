@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { AppLayout, type AppTab } from './components/AppLayout'
 import { DamageCalc } from './components/DamageCalc'
+import { SearchTab } from './components/SearchTab'
 import { SpeedTiers } from './components/SpeedTiers'
 import { Teambuilder } from './components/Teambuilder'
 
@@ -13,6 +14,7 @@ function App() {
       {tab === 'teambuilder' && <Teambuilder />}
       {tab === 'calc' && <DamageCalc />}
       {tab === 'speed' && <SpeedTiers />}
+      {tab === 'search' && <SearchTab />}
     </AppLayout>
   )
 }

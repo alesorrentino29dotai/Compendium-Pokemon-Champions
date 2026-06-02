@@ -16,6 +16,8 @@
     "cap:run": "npm run cap:sync && npx cap run android",
     "android:debug": "npm run cap:sync && cd android && ./gradlew assembleDebug",
     "android:release": "npm run cap:sync && cd android && ./gradlew assembleRelease",
+    "desktop:dev": "tauri dev",
+    "desktop:build": "tauri build",
     "data:fetch": "node scripts/fetch-showdown-data.mjs",
     "data:champions-species": "node scripts/export-champions-species.mjs",
     "data:all": "npm run data:fetch && npm run data:champions-species"
@@ -38,6 +40,7 @@
     "@pkmn/mods": "^0.10.9",
     "@pkmn/sim": "^0.10.9",
     "@tailwindcss/vite": "^4.3.0",
+    "@tauri-apps/cli": "^2.6.2",
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

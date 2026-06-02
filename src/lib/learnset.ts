@@ -2,11 +2,6 @@ import type { DexBundle } from '../data/types'
 import { formatNatureLabel } from './natureLabel'
 import { toId } from './toId'
 
-/** Gen 9 / Champions learnset source prefix. */
-function isChampionsSource(source: string): boolean {
-  return source.startsWith('9')
-}
-
 export function getLearnsetMoveNames(
   speciesId: string,
   dex: DexBundle,
@@ -18,7 +13,7 @@ export function getLearnsetMoveNames(
 
   for (const [moveId, sources] of Object.entries(entry.learnset)) {
     if (!Array.isArray(sources)) continue
-    if (!sources.some(isChampionsSource)) continue
+    if (sources.length === 0) continue
 
     const move = dex.moves[moveId]
     if (move?.name) names.add(move.name)

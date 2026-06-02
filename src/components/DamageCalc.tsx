@@ -1,20 +1,20 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import { loadDex } from '../data/loadDex'
 import {
   calcSetKey,
-  DEFAULT_FIELD,
   EMPTY_MOVE_CRITS,
   getMoveCalcEntries,
   simulateMoveDamage,
   type CalcFieldOptions,
-  type MoveSlotCrits,
 } from '../lib/smogonCalc'
+import { useDamageCalcStore } from '../store/useDamageCalcStore'
 import { useTeamStore } from '../store/useTeamStore'
 import type { PokemonSet, StatsRecord } from '../types/team'
 import { CalcPokemonPanel } from './calc/CalcPokemonPanel'
 import { DamageResults } from './calc/DamageResults'
 import { CheckboxField } from './ui/CheckboxField'
+import { shallow } from 'zustand/shallow'
 
 const WEATHER_OPTIONS: { value: CalcFieldOptions['weather']; label: string }[] =
   [
@@ -48,15 +48,52 @@ export function DamageCalc() {
   const teams = useTeamStore((s) => s.teams)
   const activeTeamId = useTeamStore((s) => s.activeTeamId)
 
-  const [attacker, setAttacker] = useState<PokemonSet | null>(null)
-  const [defender, setDefender] = useState<PokemonSet | null>(null)
-  const [attackerBoosts, setAttackerBoosts] = useState<Partial<StatsRecord>>({})
-  const [defenderBoosts, setDefenderBoosts] = useState<Partial<StatsRecord>>({})
-  const [field, setField] = useState<CalcFieldOptions>(DEFAULT_FIELD)
-  const [attackerCrits, setAttackerCrits] =
-    useState<MoveSlotCrits>(EMPTY_MOVE_CRITS)
-  const [defenderCrits, setDefenderCrits] =
-    useState<MoveSlotCrits>(EMPTY_MOVE_CRITS)
+  const {
+    attacker,
+    defender,
+    attackerBoosts,
+    defenderBoosts,
+    field,
+    attackerCrits,
+    defenderCrits,
+    setAttacker,
+    setDefender,
+    patchAttacker,
+    patchDefender,
+    patchAttackerEvs,
+    patchDefenderEvs,
+    setAttackerBoosts,
+    setDefenderBoosts,
+    patchField,
+    setAttackerCrits,
+    setDefenderCrits,
+    setAttackerMoveCrit,
+    setDefenderMoveCrit,
+  } = useDamageCalcStore(
+    (s) => ({
+      attacker: s.attacker,
+      defender: s.defender,
+      attackerBoosts: s.attackerBoosts,
+      defenderBoosts: s.defenderBoosts,
+      field: s.field,
+      attackerCrits: s.attackerCrits,
+      defenderCrits: s.defenderCrits,
+      setAttacker: s.setAttacker,
+      setDefender: s.setDefender,
+      patchAttacker: s.patchAttacker,
+      patchDefender: s.patchDefender,
+      patchAttackerEvs: s.patchAttackerEvs,
+      patchDefenderEvs: s.patchDefenderEvs,
+      setAttackerBoosts: s.setAttackerBoosts,
+      setDefenderBoosts: s.setDefenderBoosts,
+      patchField: s.patchField,
+      setAttackerCrits: s.setAttackerCrits,
+      setDefenderCrits: s.setDefenderCrits,
+      setAttackerMoveCrit: s.setAttackerMoveCrit,
+      setDefenderMoveCrit: s.setDefenderMoveCrit,
+    }),
+    shallow,
+  )
 
   const team =
     teams.find((t) => t.id === activeTeamId) ?? teams[0] ?? null
@@ -110,48 +147,8 @@ export function DamageCalc() {
         )
       : []
 
-  const patchField = (patch: Partial<CalcFieldOptions>) => {
-    setField((f) => ({ ...f, ...patch }))
-  }
-
   const attackerLabel = attacker ? pokemonLabel(attacker) : 'Attaccante'
   const defenderLabel = defender ? pokemonLabel(defender) : 'Difensore'
-
-  const patchAttacker = (patch: Partial<PokemonSet>) => {
-    setAttacker((prev) => (prev ? { ...prev, ...patch } : null))
-  }
-
-  const patchDefender = (patch: Partial<PokemonSet>) => {
-    setDefender((prev) => (prev ? { ...prev, ...patch } : null))
-  }
-
-  const patchAttackerEvs = (updater: (prev: StatsRecord) => StatsRecord) => {
-    setAttacker((prev) =>
-      prev ? { ...prev, evs: updater({ ...prev.evs }) } : null,
-    )
-  }
-
-  const patchDefenderEvs = (updater: (prev: StatsRecord) => StatsRecord) => {
-    setDefender((prev) =>
-      prev ? { ...prev, evs: updater({ ...prev.evs }) } : null,
-    )
-  }
-
-  const setAttackerMoveCrit = (slot: number, isCrit: boolean) => {
-    setAttackerCrits((prev) => {
-      const next = [...prev] as MoveSlotCrits
-      next[slot] = isCrit
-      return next
-    })
-  }
-
-  const setDefenderMoveCrit = (slot: number, isCrit: boolean) => {
-    setDefenderCrits((prev) => {
-      const next = [...prev] as MoveSlotCrits
-      next[slot] = isCrit
-      return next
-    })
-  }
 
   return (
     <div className="flex flex-col gap-6">

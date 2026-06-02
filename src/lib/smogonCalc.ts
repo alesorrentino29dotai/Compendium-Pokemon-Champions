@@ -204,6 +204,27 @@ function safeMoveDescription(result: Result): string {
   }
 }
 
+function formatSpDescription(
+  desc: string,
+  attackerSet: PokemonSet,
+  defenderSet: PokemonSet,
+): string {
+  // Replace Showdown EV-like fragments (0 Atk / 0 Def etc) with Champions SP.
+  // We keep the original structure but swap values so users see SP invested.
+  const atk = attackerSet.evs.atk
+  const spa = attackerSet.evs.spa
+  const def = defenderSet.evs.def
+  const spd = defenderSet.evs.spd
+  const hp = defenderSet.evs.hp
+
+  return desc
+    .replace(/\b0 Atk\b/g, `${atk} SP Atk`)
+    .replace(/\b0 SpA\b/g, `${spa} SP SpA`)
+    .replace(/\b0 HP\b/g, `${hp} SP HP`)
+    .replace(/\b0 Def\b/g, `${def} SP Def`)
+    .replace(/\b0 SpD\b/g, `${spd} SP SpD`)
+}
+
 /** Type immunity (0×) — damaging move with 0 damage roll. */
 export function isMoveNotEffective(result: Result, move: Move): boolean {
   if (move.category !== 'Physical' && move.category !== 'Special') {
@@ -330,7 +351,11 @@ export function simulateMoveDamage(
 
       const [min, max] = result.range()
       const pct = damagePercent(result, defenderHp)
-      const description = safeMoveDescription(result)
+      const description = formatSpDescription(
+        safeMoveDescription(result),
+        attackerSet,
+        defenderSet,
+      )
 
       return {
         move,

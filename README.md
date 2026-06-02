@@ -150,7 +150,36 @@ scripts/
 | `items.json`, `abilities.json`, `natures.json`, `typechart.json` | `@pkmn/dex` |
 | `champions-species.json` | `@pkmn/mods/champions` (specie legali Reg M-A, forme base) |
 
-Learnset filtrati su sorgenti Gen 9 (`9…`) per allineamento a Champions.
+Learnset: importati da Showdown e **non filtrati per generazione**, così ogni specie Champions mostra sempre le sue mosse disponibili.
+
+## Eseguibili Desktop (Windows / Ubuntu)
+
+La stessa app web può essere impacchettata come applicazione desktop tramite **Tauri**.
+
+### Prerequisiti
+
+- Node.js 20+
+- Rust toolchain (stable): `rustup` + `cargo`
+- Dipendenze di sistema Tauri (su Linux/Ubuntu: WebKit2GTK + build essentials)
+
+### Dev desktop
+
+```bash
+npm install
+npm run desktop:dev
+```
+
+### Build desktop
+
+```bash
+npm install
+npm run build
+npm run desktop:build
+```
+
+Output tipici:
+- Windows: installer `.msi` in `src-tauri/target/release/bundle/msi/`
+- Ubuntu: `.deb` e `.AppImage` in `src-tauri/target/release/bundle/`
 
 ## Formula statistiche (Champions)
 

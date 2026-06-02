@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export type AppTab = 'teambuilder' | 'calc' | 'speed'
+export type AppTab = 'teambuilder' | 'calc' | 'speed' | 'search'
 
 export interface AppLayoutProps {
   children: ReactNode
@@ -17,6 +17,7 @@ const TABS: {
   { id: 'teambuilder', label: 'Teambuilder', shortLabel: 'Team', enabled: true },
   { id: 'calc', label: 'Damage Calc', shortLabel: 'Calc', enabled: true },
   { id: 'speed', label: 'Speed Tiers', shortLabel: 'Speed', enabled: true },
+  { id: 'search', label: 'Search', shortLabel: 'Search', enabled: true },
 ]
 
 function tabButtonClass(isActive: boolean, mobile?: boolean): string {

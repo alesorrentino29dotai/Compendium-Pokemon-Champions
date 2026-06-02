@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Compendium",
+  "version": "0.1.0",
+  "identifier": "com.compendium.pokemonchampions",
+  "build": {
+    "beforeDevCommand": "vite --host 127.0.0.1 --port 5173",
+    "beforeBuildCommand": "vite build",
+    "devUrl": "http://127.0.0.1:5173",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Compendium — Pokémon Champions VGC",
+        "width": 1200,
+        "height": 820,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "deb", "appimage"],
+    "icon": [
+      "icons/icon-512.png",
+      "icons/icon-256.png"
+    ]
+  }
+}
+

@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import type { SpeedModifiers } from '../lib/stats'
 import { useTeamStore } from '../store/useTeamStore'
+import type { PokemonSet, StatsRecord } from '../types/team'
 import { ReferenceSpeedGrid } from './speed/ReferenceSpeedGrid'
 import { TeamSpeedPanel } from './speed/TeamSpeedPanel'
 
@@ -17,33 +18,60 @@ function defaultSpeedModifiers(): SpeedModifiers {
 export function SpeedTiers() {
   const teams = useTeamStore((s) => s.teams)
   const activeTeamId = useTeamStore((s) => s.activeTeamId)
-  const updatePokemon = useTeamStore((s) => s.updatePokemon)
 
   const [teamMods, setTeamMods] = useState<SpeedModifiers>(defaultSpeedModifiers)
   const [refMods, setRefMods] = useState<SpeedModifiers>(defaultSpeedModifiers)
+  const [localOverrides, setLocalOverrides] = useState<
+    Record<number, { nature?: PokemonSet['nature']; spe?: number }>
+  >({})
 
   const team =
     teams.find((t) => t.id === activeTeamId) ?? teams[0] ?? null
+
+  const previewPokemon = useMemo(() => {
+    if (!team) return []
+    return team.pokemon.map((p, i) => {
+      if (!p) return null
+      const ovr = localOverrides[i]
+      if (!ovr) return p
+
+      const next: PokemonSet = { ...p }
+      if (ovr.nature) next.nature = ovr.nature
+      if (typeof ovr.spe === 'number') {
+        const evs: StatsRecord = { ...next.evs, spe: ovr.spe }
+        next.evs = evs
+      }
+      return next
+    })
+  }, [team, localOverrides])
+
+  const patchOverride = (
+    slot: number,
+    patch: { nature?: PokemonSet['nature']; spe?: number },
+  ) => {
+    setLocalOverrides((prev) => ({
+      ...prev,
+      [slot]: { ...prev[slot], ...patch },
+    }))
+  }
 
   return (
     <div className="flex flex-col gap-6">
       <header>
         <h2 className="text-xl font-medium">Speed Tiers</h2>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-          Velocità Champions a liv. 50. Modifica SP e natura (+Spe / neutro / −Spe)
-          sul team o sul database; gli aggiornamenti sono immediati.
+          Velocità Champions a liv. 50. Qui puoi fare simulazioni di SP e natura
+          (+Spe / neutro / −Spe) senza modificare il team nel Teambuilder.
         </p>
       </header>
 
       {team ? (
         <TeamSpeedPanel
           teamName={team.name}
-          pokemon={team.pokemon}
+          pokemon={previewPokemon}
           mods={teamMods}
           onModsChange={(patch) => setTeamMods((m) => ({ ...m, ...patch }))}
-          onUpdatePokemon={(slot, patch) =>
-            updatePokemon(team.id, slot, patch)
-          }
+          onOverrideChange={patchOverride}
         />
       ) : (
         <section className="rounded-lg border border-showdown-border bg-showdown-panel p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
