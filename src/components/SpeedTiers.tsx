@@ -19,10 +19,12 @@ export function SpeedTiers() {
   const teams = useTeamStore((s) => s.teams)
   const activeTeamId = useTeamStore((s) => s.activeTeamId)
 
-  const [teamMods, setTeamMods] = useState<SpeedModifiers>(defaultSpeedModifiers)
   const [refMods, setRefMods] = useState<SpeedModifiers>(defaultSpeedModifiers)
   const [localOverrides, setLocalOverrides] = useState<
     Record<number, { nature?: PokemonSet['nature']; spe?: number }>
+  >({})
+  const [modsBySlot, setModsBySlot] = useState<
+    Record<number, SpeedModifiers | undefined>
   >({})
 
   const team =
@@ -55,6 +57,13 @@ export function SpeedTiers() {
     }))
   }
 
+  const patchMods = (slot: number, patch: Partial<SpeedModifiers>) => {
+    setModsBySlot((prev) => ({
+      ...prev,
+      [slot]: { ...defaultSpeedModifiers(), ...(prev[slot] ?? {}), ...patch },
+    }))
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <header>
@@ -65,8 +74,8 @@ export function SpeedTiers() {
         <TeamSpeedPanel
           teamName={team.name}
           pokemon={previewPokemon}
-          mods={teamMods}
-          onModsChange={(patch) => setTeamMods((m) => ({ ...m, ...patch }))}
+          modsBySlot={modsBySlot}
+          onModsChange={patchMods}
           onOverrideChange={patchOverride}
         />
       ) : (

@@ -62,14 +62,14 @@ export function Teambuilder() {
       <section className="rounded-lg border border-showdown-border bg-showdown-panel p-8 text-center shadow-sm dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
         <h2 className="mb-2 text-xl font-medium">Teambuilder</h2>
         <p className="mb-6 text-sm text-gray-600 dark:text-gray-300">
-          Crea il tuo team VGC Regulation M-A (6 Pokémon, livello 50).
+          Create your team (6 Pokémon, level 50).
         </p>
         <button
           type="button"
           onClick={() => createTeam()}
           className="rounded bg-showdown-accent px-6 py-2.5 text-sm font-medium text-white hover:opacity-90"
         >
-          Nuovo team
+          New team
         </button>
       </section>
     )
@@ -136,7 +136,7 @@ export function Teambuilder() {
             className="min-w-[8rem] flex-1 rounded border border-showdown-border bg-white px-2 py-1 text-sm font-medium dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
             value={active.name}
             onChange={(e) => renameTeam(active.id, e.target.value)}
-            aria-label="Nome team"
+            aria-label="Team name"
           />
 
           <div className="ml-auto flex flex-wrap gap-2">
@@ -152,7 +152,7 @@ export function Teambuilder() {
               onClick={() => duplicateTeam(active.id)}
               className="rounded border border-showdown-border px-2 py-1 text-xs hover:bg-showdown-hover dark:border-showdown-dark-border"
             >
-              Duplica
+              Duplicate
             </button>
             {teams.length > 1 && (
               <button
@@ -163,7 +163,7 @@ export function Teambuilder() {
                 }}
                 className="rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:border-red-900"
               >
-                Elimina
+                Delete
               </button>
             )}
           </div>
@@ -172,7 +172,7 @@ export function Teambuilder() {
         {/* Team grid */}
         <div className="border-b border-showdown-border p-3 sm:p-4 dark:border-showdown-dark-border">
           <p className="mb-3 text-xs text-gray-500">
-            Reg M-A · Tocca uno slot per modificare, o + per aggiungere
+            Tap a slot to edit, or + to add.
           </p>
           <TeamGrid
             pokemon={active.pokemon}
@@ -197,9 +197,9 @@ export function Teambuilder() {
             />
           ) : (
             <div className="flex flex-col items-center justify-center py-12 text-center text-sm text-gray-400">
-              <p>Seleziona un Pokémon dalla squadra</p>
+              <p>Select a Pokémon from the team</p>
               <p className="mt-1 text-xs">
-                oppure tocca + su uno slot vuoto
+                or tap + on an empty slot
               </p>
             </div>
           )}
@@ -212,8 +212,8 @@ export function Teambuilder() {
         onSelect={handleSpeciesPick}
         title={
           pickerSlot !== null
-            ? `Slot ${pickerSlot + 1} — Scegli Pokémon`
-            : 'Seleziona Pokémon'
+            ? `Slot ${pickerSlot + 1} — Choose Pokémon`
+            : 'Choose Pokémon'
         }
       />
     </>

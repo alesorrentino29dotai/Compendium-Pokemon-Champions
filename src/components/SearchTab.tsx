@@ -43,8 +43,11 @@ export function SearchTab() {
         }
       }
 
-      // Moves (learnsets)
-      const learnset = dex.learnsets[speciesId]?.learnset
+      // Moves (learnsets) — forme fallback to base species
+      const baseName = (species.baseSpecies as string | undefined) || species.name
+      const baseId = baseName ? toId(baseName) : ''
+      const learnset =
+        dex.learnsets[speciesId]?.learnset || (baseId ? dex.learnsets[baseId]?.learnset : undefined)
       if (learnset) {
         for (const moveId of Object.keys(learnset)) {
           const move = dex.moves[moveId]
@@ -88,15 +91,14 @@ export function SearchTab() {
       <header>
         <h2 className="text-xl font-medium">Search</h2>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-          Cerca una mossa o un’abilità e ottieni i Pokémon Champions che la
-          possiedono.
+          Search a move or ability and list all available Pokémon that have it.
         </p>
       </header>
 
       <section className="rounded-lg border border-showdown-border bg-showdown-panel p-3 shadow-sm sm:p-4 dark:border-showdown-dark-border dark:bg-showdown-dark-panel">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
           <label className="text-xs text-gray-500">
-            Tipo ricerca
+            Search type
             <select
               value={mode}
               onChange={(e) => {
@@ -105,18 +107,18 @@ export function SearchTab() {
               }}
               className="mt-0.5 w-full rounded border border-showdown-border bg-white px-2 py-1.5 text-sm dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
             >
-              <option value="move">Mossa</option>
-              <option value="ability">Abilità</option>
+              <option value="move">Move</option>
+              <option value="ability">Ability</option>
             </select>
           </label>
 
           <label className="flex-1 text-xs text-gray-500">
-            {mode === 'move' ? 'Mossa' : 'Abilità'}
+            {mode === 'move' ? 'Move' : 'Ability'}
             <input
               list={mode === 'move' ? 'move-options' : 'ability-options'}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={mode === 'move' ? 'Es. Protect' : 'Es. Intimidate'}
+              placeholder={mode === 'move' ? 'e.g. Protect' : 'e.g. Intimidate'}
               className="mt-0.5 w-full rounded border border-showdown-border bg-white px-2 py-1.5 text-sm dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
             />
           </label>
@@ -136,16 +138,16 @@ export function SearchTab() {
         <div className="mt-4 border-t border-showdown-border/60 pt-4 dark:border-showdown-dark-border/60">
           {!normalized ? (
             <p className="text-sm text-gray-500">
-              Inizia a digitare per vedere i Pokémon corrispondenti.
+              Start typing to see matching Pokémon.
             </p>
           ) : hits.length === 0 ? (
             <p className="text-sm text-gray-500">
-              Nessun Pokémon trovato per: <span className="font-medium">{normalized}</span>
+              No Pokémon found for: <span className="font-medium">{normalized}</span>
             </p>
           ) : (
             <div>
               <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-showdown-accent">
-                {hits.length} risultati
+                {hits.length} results
               </p>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {hits.map((speciesId) => {
@@ -174,9 +176,7 @@ export function SearchTab() {
           )}
           {normalized && options.length > 0 && (
             <p className="mt-4 text-[10px] text-gray-400">
-              Suggerimenti: {mode === 'move' ? 'mosse' : 'abilità'} indicizzate:
-              {' '}
-              {options.length.toLocaleString()}
+              Indexed {mode === 'move' ? 'moves' : 'abilities'}: {options.length.toLocaleString()}
             </p>
           )}
         </div>

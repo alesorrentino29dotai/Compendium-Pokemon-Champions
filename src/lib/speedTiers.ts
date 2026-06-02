@@ -137,13 +137,13 @@ export function getFinalSpeed(
 export function buildTeamSpeedRows(
   pokemon: (PokemonSet | null)[],
   dex: DexBundle,
-  mods: SpeedModifiers,
+  modsBySlot: Record<number, SpeedModifiers | undefined>,
 ): SpeedTierRow[] {
   const rows: SpeedTierRow[] = []
 
   pokemon.forEach((set, slot) => {
     if (!set) return
-    const row = buildTeamSpeedRow(set, slot, dex, mods)
+    const row = buildTeamSpeedRow(set, slot, dex, modsBySlot[slot] ?? {})
     if (row) rows.push(row)
   })
 
