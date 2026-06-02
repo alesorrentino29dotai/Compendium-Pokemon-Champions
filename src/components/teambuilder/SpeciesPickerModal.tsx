@@ -64,39 +64,42 @@ export function SpeciesPickerModal({
           </button>
         </div>
 
-        <div className="overflow-y-auto p-4 pb-[max(env(safe-area-inset-bottom),1rem)]">
+        <div className="flex min-h-0 flex-1 flex-col p-4 pb-[max(env(safe-area-inset-bottom),1rem)]">
           <SpeciesSearchSelect
             value={null}
             onChange={handleSelect}
             placeholder="Cerca per nome o n° dex…"
+            inline
           />
 
-          <p className="mt-4 mb-2 text-xs text-gray-400">
-            Popolari (tocca per aggiungere)
-          </p>
-          <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
-            {POPULAR_SPECIES.map((id) => {
-              const entry = getChampionsSpeciesList().find((s) => s.id === id)
-              if (!entry) return null
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => handleSelect(entry)}
-                  className="flex flex-col items-center gap-1 rounded border border-showdown-border p-2 hover:border-showdown-accent hover:bg-showdown-hover dark:border-showdown-dark-border dark:hover:bg-showdown-dark-border/40"
-                >
-                  <PokemonSprite
-                    speciesId={entry.id}
-                    speciesName={entry.name}
-                    nationalNum={entry.num}
-                    size={48}
-                  />
-                  <span className="max-w-full truncate text-[10px]">
-                    {entry.name}
-                  </span>
-                </button>
-              )
-            })}
+          <div className="mt-4">
+            <p className="mb-2 text-xs text-gray-400">
+              Popolari (tocca per aggiungere)
+            </p>
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
+              {POPULAR_SPECIES.map((id) => {
+                const entry = getChampionsSpeciesList().find((s) => s.id === id)
+                if (!entry) return null
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => handleSelect(entry)}
+                    className="flex flex-col items-center gap-1 rounded border border-showdown-border p-2 hover:border-showdown-accent hover:bg-showdown-hover dark:border-showdown-dark-border dark:hover:bg-showdown-dark-border/40"
+                  >
+                    <PokemonSprite
+                      speciesId={entry.id}
+                      speciesName={entry.name}
+                      nationalNum={entry.num}
+                      size={48}
+                    />
+                    <span className="max-w-full truncate text-[10px]">
+                      {entry.name}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>

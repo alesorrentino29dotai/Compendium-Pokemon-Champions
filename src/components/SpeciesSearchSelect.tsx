@@ -22,6 +22,8 @@ export interface SpeciesSearchSelectProps {
   placeholder?: string
   disabled?: boolean
   className?: string
+  /** Render search + results inline (no popover). Useful inside modals. */
+  inline?: boolean
 }
 
 function normalizeSearch(text: string): string {
@@ -34,6 +36,7 @@ export function SpeciesSearchSelect({
   placeholder = 'Cerca Pokémon…',
   disabled = false,
   className = '',
+  inline = false,
 }: SpeciesSearchSelectProps) {
   const listId = useId()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -70,7 +73,7 @@ export function SpeciesSearchSelect({
   }, [allSpecies, query])
 
   const close = useCallback(() => {
-    setOpen(false)
+    if (!inline) setOpen(false)
     setQuery('')
     setHighlight(0)
   }, [])
@@ -84,15 +87,20 @@ export function SpeciesSearchSelect({
   )
 
   useEffect(() => {
+    if (inline) return
     if (!open) return
     const onDoc = (e: MouseEvent) => {
       if (!rootRef.current?.contains(e.target as Node)) close()
     }
     document.addEventListener('mousedown', onDoc)
     return () => document.removeEventListener('mousedown', onDoc)
-  }, [open, close])
+  }, [open, close, inline])
 
   useEffect(() => {
+    if (inline) {
+      setUseMobileSheet(false)
+      return
+    }
     const mq = window.matchMedia?.('(max-width: 639px)')
     if (!mq) return
 
@@ -109,6 +117,7 @@ export function SpeciesSearchSelect({
   }, [])
 
   useEffect(() => {
+    if (inline) return
     if (!open || !useMobileSheet) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
@@ -138,6 +147,67 @@ export function SpeciesSearchSelect({
       e.preventDefault()
       close()
     }
+  }
+
+  if (inline) {
+    return (
+      <div ref={rootRef} className={`flex min-h-0 flex-1 flex-col ${className}`}>
+        <div className="border-b border-showdown-border pb-3 dark:border-showdown-dark-border">
+          <input
+            ref={inputRef}
+            type="search"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value)
+              setHighlight(0)
+            }}
+            onKeyDown={onKeyDown}
+            placeholder="Nome o n° Pokédex…"
+            className="w-full rounded border border-showdown-border bg-showdown-bg px-3 py-2 text-sm outline-none focus:border-showdown-accent dark:border-showdown-dark-border dark:bg-showdown-dark-bg"
+            autoComplete="off"
+            spellCheck={false}
+            disabled={disabled}
+            autoFocus
+          />
+          <p className="mt-1 text-[10px] text-gray-400">
+            {filtered.length}
+            {filtered.length >= MAX_SEARCH_RESULTS ? '+' : ''} risultati · Reg M-A
+          </p>
+        </div>
+
+        <ul className="min-h-0 flex-1 overflow-y-auto py-2">
+          {filtered.length === 0 ? (
+            <li className="px-3 py-6 text-center text-sm text-gray-400">
+              Nessun Pokémon trovato
+            </li>
+          ) : (
+            filtered.map((species, i) => (
+              <li key={species.id} role="option" aria-selected={i === highlight}>
+                <button
+                  type="button"
+                  className={`flex w-full items-center gap-2 rounded px-3 py-2.5 text-left text-sm hover:bg-showdown-hover dark:hover:bg-showdown-dark-border/40 ${
+                    i === highlight ? 'bg-showdown-hover dark:bg-showdown-dark-border/60' : ''
+                  } ${value === species.id ? 'text-showdown-accent' : ''}`}
+                  onMouseEnter={() => setHighlight(i)}
+                  onClick={() => pick(species)}
+                >
+                  <PokemonSprite
+                    speciesId={species.id}
+                    speciesName={species.name}
+                    nationalNum={species.num}
+                  />
+                  <span className="min-w-0 flex-1 truncate">{species.name}</span>
+                  <span className="font-mono text-[10px] text-gray-400">
+                    #{species.num}
+                  </span>
+                  <TypeBadges types={species.types} small />
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
+    )
   }
 
   return (
