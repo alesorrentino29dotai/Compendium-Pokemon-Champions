@@ -46,8 +46,10 @@ export function SearchTab() {
       // Moves (learnsets) — forme fallback to base species
       const baseName = (species.baseSpecies as string | undefined) || species.name
       const baseId = baseName ? toId(baseName) : ''
-      const learnset =
-        dex.learnsets[speciesId]?.learnset || (baseId ? dex.learnsets[baseId]?.learnset : undefined)
+      const selfLearnset = dex.learnsets[speciesId]?.learnset
+      const baseLearnset = baseId ? dex.learnsets[baseId]?.learnset : undefined
+      const learnset = selfLearnset || baseLearnset ? { ...(baseLearnset ?? {}), ...(selfLearnset ?? {}) } : undefined
+
       if (learnset) {
         for (const moveId of Object.keys(learnset)) {
           const move = dex.moves[moveId]

@@ -6,23 +6,25 @@ export function getLearnsetMoveNames(
   speciesId: string,
   dex: DexBundle,
 ): string[] {
-  const entry = dex.learnsets[speciesId]
-  let learnset = entry?.learnset
+  const species = dex.pokedex[speciesId]
+  const baseSpeciesName = (species?.baseSpecies as string | undefined) || species?.name
+  const baseId = baseSpeciesName ? toId(baseSpeciesName) : ''
 
-  // Many forme (ex: Mega) reuse the base species learnset in Showdown.
-  if (!learnset) {
-    const species = dex.pokedex[speciesId]
-    const baseSpeciesName =
-      (species?.baseSpecies as string | undefined) || species?.name
-    const baseId = baseSpeciesName ? toId(baseSpeciesName) : ''
-    learnset = (baseId && dex.learnsets[baseId]?.learnset) || undefined
-  }
+  const selfLearnset = dex.learnsets[speciesId]?.learnset
+  const baseLearnset = baseId ? dex.learnsets[baseId]?.learnset : undefined
 
-  if (!learnset) return []
+  // Formes: use union(self, base) so Rotom appliances keep exclusive moves
+  // while inheriting the full base species learnset.
+  const mergedLearnset: Record<string, string[]> | undefined =
+    selfLearnset || baseLearnset
+      ? { ...(baseLearnset ?? {}), ...(selfLearnset ?? {}) }
+      : undefined
+
+  if (!mergedLearnset) return []
 
   const names = new Set<string>()
 
-  for (const [moveId, sources] of Object.entries(learnset)) {
+  for (const [moveId, sources] of Object.entries(mergedLearnset)) {
     if (!Array.isArray(sources)) continue
     if (sources.length === 0) continue
 

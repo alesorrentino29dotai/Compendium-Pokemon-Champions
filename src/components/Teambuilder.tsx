@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import type { ChampionsSpeciesEntry } from '../data/championsSpecies'
 import { loadDex } from '../data/loadDex'
 import { createEmptyPokemonSet } from '../lib/pokemonSet'
+import { exportTeamChampions, exportTeamShowdown } from '../lib/teamExport'
 import { useTeamStore } from '../store/useTeamStore'
 import { PokemonEditor } from './teambuilder/PokemonEditor'
 import { SpeciesPickerModal } from './teambuilder/SpeciesPickerModal'
@@ -140,6 +141,30 @@ export function Teambuilder() {
           />
 
           <div className="ml-auto flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={async () => {
+                const text = exportTeamShowdown(active)
+                if (!text) return
+                await navigator.clipboard.writeText(text)
+              }}
+              className="rounded border border-showdown-border px-2 py-1 text-xs hover:bg-showdown-hover dark:border-showdown-dark-border"
+              title="Copy team to clipboard (Pokémon Showdown format)"
+            >
+              Export (Showdown)
+            </button>
+            <button
+              type="button"
+              onClick={async () => {
+                const text = exportTeamChampions(active)
+                if (!text) return
+                await navigator.clipboard.writeText(text)
+              }}
+              className="rounded border border-showdown-border px-2 py-1 text-xs hover:bg-showdown-hover dark:border-showdown-dark-border"
+              title="Copy team to clipboard (Pokémon Champions format)"
+            >
+              Export (Champions)
+            </button>
             <button
               type="button"
               onClick={() => createTeam()}
