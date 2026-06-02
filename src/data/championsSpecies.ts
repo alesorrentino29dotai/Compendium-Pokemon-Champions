@@ -37,6 +37,15 @@ function isOfficialMega(entry: PokedexEntry): boolean {
   return true
 }
 
+function isRegionalForme(entry: PokedexEntry): boolean {
+  if (!entry?.baseSpecies) return false
+  if (typeof entry.num !== 'number' || entry.num < 1) return false
+  const forme = String((entry as any).forme ?? '')
+  if (!forme) return false
+  // We only want regional variants requested by user.
+  return forme.startsWith('Galar') || forme.startsWith('Hisui')
+}
+
 function toChampionsEntry(id: string, dexEntry: PokedexEntry): ChampionsSpeciesEntry {
   return {
     id,
@@ -58,12 +67,23 @@ export function getChampionsSpeciesList(): ChampionsSpeciesEntry[] {
   const allowedBaseSpecies = new Set(base.map((s) => s.baseSpecies))
   const megas: ChampionsSpeciesEntry[] = []
   const extraFormes: ChampionsSpeciesEntry[] = []
+  const regionalFormes: ChampionsSpeciesEntry[] = []
+  const existingIds = new Set(base.map((s) => s.id))
 
   for (const [id, entry] of Object.entries(dex.pokedex)) {
     if (!isOfficialMega(entry)) continue
     const baseSpecies = String((entry as any).baseSpecies ?? '')
     if (!allowedBaseSpecies.has(baseSpecies)) continue
     megas.push(toChampionsEntry(id, entry))
+  }
+
+  // Regional formes (Hisui/Galar) for species already in roster.
+  for (const [id, entry] of Object.entries(dex.pokedex)) {
+    if (!isRegionalForme(entry)) continue
+    if (existingIds.has(id)) continue
+    const baseSpecies = String((entry as any).baseSpecies ?? '')
+    if (!allowedBaseSpecies.has(baseSpecies)) continue
+    regionalFormes.push(toChampionsEntry(id, entry))
   }
 
   // Rotom appliance formes (official, same base species).
@@ -81,7 +101,8 @@ export function getChampionsSpeciesList(): ChampionsSpeciesEntry[] {
 
   megas.sort((a, b) => a.name.localeCompare(b.name))
   extraFormes.sort((a, b) => a.name.localeCompare(b.name))
-  cachedList = [...base, ...extraFormes, ...megas]
+  regionalFormes.sort((a, b) => a.name.localeCompare(b.name))
+  cachedList = [...base, ...regionalFormes, ...extraFormes, ...megas]
   return cachedList
 }
 
